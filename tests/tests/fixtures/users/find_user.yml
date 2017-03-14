@@ -1,0 +1,31 @@
+
+-
+    request:
+        method: GET
+        url: 'https://api.hubstaff.com/v1/users/61188?'
+        headers:
+            Host: api.hubstaff.com
+            Auth-Token: 5WZ1SCto37HBhH-AR1jn0kC3FXROO4b39CREMSyt_1U
+            App-token: pHR18-G-9c05NoyBtji3a8A2KsFKOuZcSZK4gT5V9vc
+    response:
+        status:
+            http_version: '1.1'
+            code: '200'
+            message: OK
+        headers:
+            Connection: keep-alive
+            Content-Type: application/json
+            Content-Length: '118'
+            Status: '200 OK'
+            Cache-Control: 'max-age=0, private, must-revalidate'
+            Date: 'Sat, 17 Sep 2016 06:16:14 GMT'
+            Vary: Origin
+            Strict-Transport-Security: max-age=31536000
+            X-Request-Id: e9e93c3d-5e64-41c3-828b-123252148280
+            Etag: 'W/"0b0d049f68cfc1b318758892f64db28a"'
+            X-Runtime: '0.053446'
+            X-Rack-Cache: miss
+            X-Powered-By: 'Phusion Passenger 5.0.30'
+            Server: 'nginx/1.10.1 + Phusion Passenger 5.0.30'
+            Via: '1.1 vegur'
+        body: '{"user":{"id":61188,"name":"Raymond Cudjoe","last_activity":"2016-05-24T01:25:21Z","email":"rkcudjoe@hookengine.com"}}'

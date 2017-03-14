@@ -1,0 +1,31 @@
+
+-
+    request:
+        method: GET
+        url: 'https://api.hubstaff.com/v1/notes/716530?'
+        headers:
+            Host: api.hubstaff.com
+            Auth-Token: 5WZ1SCto37HBhH-AR1jn0kC3FXROO4b39CREMSyt_1U
+            App-token: pHR18-G-9c05NoyBtji3a8A2KsFKOuZcSZK4gT5V9vc
+    response:
+        status:
+            http_version: '1.1'
+            code: '200'
+            message: OK
+        headers:
+            Connection: keep-alive
+            Content-Type: application/json
+            Content-Length: '161'
+            Status: '200 OK'
+            X-Rack-Cache: miss
+            Cache-Control: 'max-age=0, private, must-revalidate'
+            Date: 'Sat, 17 Sep 2016 06:28:19 GMT'
+            Vary: Origin
+            Strict-Transport-Security: max-age=31536000
+            Etag: 'W/"57d2d09ca2ac08ebe955a9694baa5fbc"'
+            X-Runtime: '0.058609'
+            X-Request-Id: df166073-a0da-44f5-9abd-6716fc2a8ff7
+            X-Powered-By: 'Phusion Passenger 5.0.30'
+            Server: 'nginx/1.10.1 + Phusion Passenger 5.0.30'
+            Via: '1.1 vegur'
+        body: '{"note":{"id":716530,"description":"Practice Notes","time_slot":"2016-05-23T22:20:00Z","recorded_at":"2016-06-04T19:08:22Z","user_id":61188,"project_id":112761}}'

@@ -1,0 +1,31 @@
+
+-
+    request:
+        method: GET
+        url: 'https://api.hubstaff.com/v1/projects/112761?'
+        headers:
+            Host: api.hubstaff.com
+            Auth-Token: 5WZ1SCto37HBhH-AR1jn0kC3FXROO4b39CREMSyt_1U
+            App-token: pHR18-G-9c05NoyBtji3a8A2KsFKOuZcSZK4gT5V9vc
+    response:
+        status:
+            http_version: '1.1'
+            code: '200'
+            message: OK
+        headers:
+            Connection: keep-alive
+            Content-Type: application/json
+            Content-Length: '92'
+            Status: '200 OK'
+            Cache-Control: 'max-age=0, private, must-revalidate'
+            Date: 'Sat, 17 Sep 2016 06:21:48 GMT'
+            Vary: Origin
+            Strict-Transport-Security: max-age=31536000
+            X-Request-Id: 92bd25e2-04e3-425b-9830-fd026ba870d8
+            Etag: 'W/"7bd7378ce220cf2765d17e49f0b1d957"'
+            X-Runtime: '0.033722'
+            X-Rack-Cache: miss
+            X-Powered-By: 'Phusion Passenger 5.0.30'
+            Server: 'nginx/1.10.1 + Phusion Passenger 5.0.30'
+            Via: '1.1 vegur'
+        body: '{"project":{"id":112761,"name":"Build Ruby Gem","last_activity":"2016-05-24T01:25:21Z","status":"Active","description":null}}'

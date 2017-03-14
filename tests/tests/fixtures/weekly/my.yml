@@ -1,0 +1,31 @@
+
+-
+    request:
+        method: GET
+        url: 'https://api.hubstaff.com/v1/weekly/my?date=2016-05-01&organizations=27572&projects=112761&users=61188'
+        headers:
+            Host: api.hubstaff.com
+            Auth-Token: 5WZ1SCto37HBhH-AR1jn0kC3FXROO4b39CREMSyt_1U
+            App-token: pHR18-G-9c05NoyBtji3a8A2KsFKOuZcSZK4gT5V9vc
+    response:
+        status:
+            http_version: '1.1'
+            code: '200'
+            message: OK
+        headers:
+            Connection: keep-alive
+            Content-Type: application/json
+            Content-Length: '20'
+            Status: '200 OK'
+            X-Rack-Cache: miss
+            Cache-Control: 'max-age=0, private, must-revalidate'
+            Date: 'Sat, 17 Sep 2016 06:32:31 GMT'
+            Vary: Origin
+            Strict-Transport-Security: max-age=31536000
+            Etag: 'W/"0002b794793eb0ac3c6eba0af45cdec5"'
+            X-Runtime: '0.070683'
+            X-Request-Id: d7472ecb-2815-4e18-8b7f-20098e63ed05
+            X-Powered-By: 'Phusion Passenger 5.0.30'
+            Server: 'nginx/1.10.1 + Phusion Passenger 5.0.30'
+            Via: '1.1 vegur'
+        body: '{"organizations":[]}'

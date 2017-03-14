@@ -1,0 +1,31 @@
+
+-
+    request:
+        method: GET
+        url: 'https://api.hubstaff.com/v1/custom/by_project/my?start_date=2016-05-23&end_date=2016-05-25&organizations=27572&projects=112761&users=61188&show_tasks=1&show_notes=1&show_activity=1&include_archived=1'
+        headers:
+            Host: api.hubstaff.com
+            Auth-Token: 5WZ1SCto37HBhH-AR1jn0kC3FXROO4b39CREMSyt_1U
+            App-token: pHR18-G-9c05NoyBtji3a8A2KsFKOuZcSZK4gT5V9vc
+    response:
+        status:
+            http_version: '1.1'
+            code: '200'
+            message: OK
+        headers:
+            Connection: keep-alive
+            Content-Type: application/json
+            Content-Length: '390'
+            Status: '200 OK'
+            X-Rack-Cache: miss
+            Cache-Control: 'max-age=0, private, must-revalidate'
+            Date: 'Sat, 17 Sep 2016 06:35:39 GMT'
+            Vary: Origin
+            Strict-Transport-Security: max-age=31536000
+            Etag: 'W/"87d8838169a37d12153129317fb3a729"'
+            X-Runtime: '0.074668'
+            X-Request-Id: 1cd3be72-0454-4734-986f-aae60b4a97f7
+            X-Powered-By: 'Phusion Passenger 5.0.30'
+            Server: 'nginx/1.10.1 + Phusion Passenger 5.0.30'
+            Via: '1.1 vegur'
+        body: '{"organizations":[{"id":27572,"name":"Hook Engine","duration":7874,"activity_percent":38,"projects":[{"id":112761,"name":"Build Ruby Gem","duration":7874,"activity_percent":38,"dates":[{"date":"2016-05-23","duration":7874,"activity_percent":38,"users":[{"id":61188,"name":"Raymond Cudjoe","duration":7874,"activity_percent":38,"notes":[{"id":716530,"description":"Practice Notes"}]}]}]}]}]}'
