@@ -9,7 +9,7 @@
 			$this->options["projects"] ="112761";
 			$this->options["organizations"] = "27572";
 
-			require_once("../hubstaff.php");
+			require_once("hubstaff.php");
 	        $this->stub = $this->getMockBuilder('hubstaff\Client')->disableOriginalConstructor()->getMock();
 		}		
 		public function testNotes()
