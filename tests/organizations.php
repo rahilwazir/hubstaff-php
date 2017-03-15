@@ -4,7 +4,7 @@
 		public $stub;
 		function __construct()
 		{
-			require_once("../hubstaff.php");
+			require_once("hubstaff.php");
 	        $this->stub = $this->getMockBuilder('hubstaff\Client')->disableOriginalConstructor()->getMock();
 		}	
 		public function testOrganizations()

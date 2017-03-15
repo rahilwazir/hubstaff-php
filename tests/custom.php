@@ -15,7 +15,7 @@
             $this->options["show_activity"] = "1";
             $this->options["include_archived"] = "1";
 		
-			require_once("../hubstaff.php");
+			require_once("hubstaff.php");
 	        $this->stub = $this->getMockBuilder('hubstaff\Client')->disableOriginalConstructor()->getMock();
 		}		
 		public function testCustom_date_team()
