@@ -16,9 +16,8 @@
 		{
             $starttime = "2016-03-14";
             $stoptime = "2016-03-20";
-			\VCR\VCR::turnOn();
-			\VCR\VCR::insertCassette('activities/activities.yml');
-	        $this->stub->method('activities')->willReturn(json_decode('{"activities":[]}',true));	
+
+		$this->stub->method('activities')->willReturn(json_decode('{"activities":[]}',true));	
        		$this->assertArrayHasKey("activities", $this->stub->activities($starttime, $stoptime, $this->options, 0));
 		}
 	}	
