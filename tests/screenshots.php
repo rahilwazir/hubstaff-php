@@ -16,8 +16,8 @@
 		{
             $starttime = "2016-03-14";
             $stoptime = "2016-03-20";
-			\VCR\VCR::turnOn();
-			\VCR\VCR::insertCassette('screenshots/screenshots.yml');
+			// \VCR\VCR::turnOn();
+			// \VCR\VCR::insertCassette('screenshots/screenshots.yml');
 	        $this->stub->method('screenshots')->willReturn(json_decode('{"screenshots":[]}',true));	
        		$this->assertArrayHasKey("screenshots", $this->stub->screenshots($starttime, $stoptime, $this->options, 0));
 		}

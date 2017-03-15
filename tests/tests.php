@@ -1,10 +1,10 @@
 <?php
-namespace VCR\LibraryHooks;
-use VCR\Request;
-use VCR\Response;
-use VCR\Configuration;
-use VCR\CodeTransform\CurlCodeTransform;
-use VCR\Util\StreamProcessor;
+// namespace VCR\LibraryHooks;
+// use VCR\Request;
+// use VCR\Response;
+// use VCR\Configuration;
+// use VCR\CodeTransform\CurlCodeTransform;
+// use VCR\Util\StreamProcessor;
 /**
  * Test if intercepting http/https using curl works.
  */
@@ -12,11 +12,11 @@ class CurlHookTest extends \PHPUnit_Framework_TestCase
 {
     public $expected = 'example response body';
     /**
-     * @var \VCR\Configuration
+     // * @var \VCR\Configuration
      */
     protected $config;
     /**
-     * @var \VCR\LibraryHooks\CurlHook
+     // * @var \VCR\LibraryHooks\CurlHook
      */
     protected $curlHook;
     public function setup()
@@ -34,8 +34,8 @@ class CurlHookTest extends \PHPUnit_Framework_TestCase
     }
     public function testShouldInterceptCallWhenEnabled()
     {
-    	\VCR\VCR::turnOn();
-    	\VCR\VCR::insertCassette('example');
+    	// \VCR\VCR::turnOn();
+    	// \VCR\VCR::insertCassette('example');
         $this->curlHook->enable($this->getTestCallback());
         $curlHandle = curl_init('http://google.com/');
         curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);

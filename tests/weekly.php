@@ -15,15 +15,15 @@
 		}		
 		public function testWeekly_team()
 		{
-			\VCR\VCR::turnOn();
-			\VCR\VCR::insertCassette('weekly/team.yml');
+			// \VCR\VCR::turnOn();
+			// \VCR\VCR::insertCassette('weekly/team.yml');
 	        $this->stub->method('weekly_team')->willReturn(json_decode('{"organizations":[]}',true));	
        		$this->assertArrayHasKey("organizations", $this->stub->weekly_team($this->options));
 		}
 		public function testWeekly_my()
 		{
-			\VCR\VCR::turnOn();
-			\VCR\VCR::insertCassette('weekly/my.yml');
+			// \VCR\VCR::turnOn();
+			// \VCR\VCR::insertCassette('weekly/my.yml');
 	        $this->stub->method('weekly_my')->willReturn(json_decode('{"organizations":[]}',true));	
        		$this->assertArrayHasKey("organizations", $this->stub->weekly_my($this->options));
 		}
