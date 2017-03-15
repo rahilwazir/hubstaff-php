@@ -3,8 +3,8 @@
 	include("hubstaff/hubstaff.php");
 
 	$app_token = "< your hubstaff app token >";
-	$email = "< your hubstaff account email address >";
-	$password = "< your hubstaff account password >";
+	$email = "rkcudjoe@hookengine.com";
+	$password = "hookdev001";
 
 	$hubstaff = new hubstaff\Client($app_token);
 
