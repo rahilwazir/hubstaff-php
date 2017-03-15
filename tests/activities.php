@@ -6,7 +6,7 @@
 		function __construct()
 		{			
 			$this->options["users"] = "61188";
-			$this->oßtions["projects"] ="112761";
+			$this->options["projects"] ="112761";
 			$this->options["organizations"] = "27572";
 		
 			require_once("hubstaff.php");
@@ -16,8 +16,8 @@
 		{
             $starttime = "2016-03-14";
             $stoptime = "2016-03-20";
-			VCR::turnOn();
-			VCR::insertCassette('activities/activities.yml');
+			\VCR\VCR::turnOn();
+			\VCR\VCR::insertCassette('activities/activities.yml');
 	        $this->stub->method('activities')->willReturn(json_decode('{"activities":[]}',true));	
        		$this->assertArrayHasKey("activities", $this->stub->activities($starttime, $stoptime, $this->options, 0));
 		}
