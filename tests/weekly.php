@@ -10,7 +10,7 @@
 			$this->options["organizations"] = "27572";
 			$this->options["date"] = "2016-05-01";
 
-			require_once("../hubstaff.php");
+			require_once("hubstaff.php");
 	        $this->stub = $this->getMockBuilder('hubstaff\Client')->disableOriginalConstructor()->getMock();
 		}		
 		public function testWeekly_team()
