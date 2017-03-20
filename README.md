@@ -208,11 +208,19 @@ $hubstaff->screenshots("2016-05-22", "2016-05-24", array("projects"=>"112761"));
 
 ### Run tests
 
-In order to run user tests you need to get development dependencies using composer:
+In order to run tests you need to get development dependencies using composer:
+
 ```php
-composer install --dev
+composer install --prefer-source
 ``` 
-and run
+
+And run for each test file as shown here:
 ```php
-phpunit ./users
+phpunit ./tests/activities.php
+
+//AND
+
+phpunit ./tests/screenshots.php
+
+//etc
 ```
