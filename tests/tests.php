@@ -1,23 +1,12 @@
 <?php
-// namespace VCR\LibraryHooks;
-// use VCR\Request;
-// use VCR\Response;
-// use VCR\Configuration;
-// use VCR\CodeTransform\CurlCodeTransform;
-// use VCR\Util\StreamProcessor;
 /**
  * Test if intercepting http/https using curl works.
  */
 class CurlHookTest extends \PHPUnit_Framework_TestCase
 {
     public $expected = 'example response body';
-    /**
-     // * @var \VCR\Configuration
-     */
     protected $config;
-    /**
-     // * @var \VCR\LibraryHooks\CurlHook
-     */
+   
     protected $curlHook;
     public function setup()
     {
@@ -26,23 +15,22 @@ class CurlHookTest extends \PHPUnit_Framework_TestCase
     }
     public function testShouldBeEnabledAfterEnabling()
     {
-       // $this->assertFalse($this->curlHook->isEnabled(), 'Initially the CurlHook should be disabled.');
-        $this->curlHook->enable($this->getTestCallback());
-        $this->assertTrue($this->curlHook->isEnabled(), 'After enabling the CurlHook should be disabled.');
-        $this->curlHook->disable();
-        $this->assertFalse($this->curlHook->isEnabled(), 'After disabling the CurlHook should be disabled.');
+
+    $this->curlHook->enable($this->getTestCallback());
+    $this->assertTrue($this->curlHook->isEnabled(), 'After enabling the CurlHook should be disabled.');
+    $this->curlHook->disable();
+    $this->assertFalse($this->curlHook->isEnabled(), 'After disabling the CurlHook should be disabled.');
     }
     public function testShouldInterceptCallWhenEnabled()
     {
-    	// \VCR\VCR::turnOn();
-    	// \VCR\VCR::insertCassette('example');
-        $this->curlHook->enable($this->getTestCallback());
-        $curlHandle = curl_init('http://google.com/');
-        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
-        $actual = curl_exec($curlHandle);
-        curl_close($curlHandle);
-        $this->curlHook->disable();
-        $this->assertEquals($this->expected, $actual, 'Response was not returned.');
+
+    $this->curlHook->enable($this->getTestCallback());
+    $curlHandle = curl_init('http://google.com/');
+    curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
+    $actual = curl_exec($curlHandle);
+    curl_close($curlHandle);
+    $this->curlHook->disable();
+    $this->assertEquals($this->expected, $actual, 'Response was not returned.');
     }
     /**
      * @group uses_internet
