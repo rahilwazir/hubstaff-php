@@ -1,18 +1,20 @@
 {
-
-    "require": {
-        "ext-curl": "*",
-        "beberlei/assert": "2.*",
-        "symfony/yaml": "2.*|3.*",
-        "symfony/event-dispatcher": "~2.1|3.*"
+  "require": {
+    "ext-curl": "*",
+    "beberlei/assert": "2.*",
+    "symfony/yaml": "2.*|3.*",
+    "symfony/event-dispatcher": "~2.1|3.*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "3.7.14"
+  },
+  "autoload": {
+    "psr-0": {
+      "phpUnitTutorial": ""
     },
-
-    "require-dev": {
-        "phpunit/phpunit": "3.7.14"
-    },
-    "autoload": {
-        "psr-0": {
-            "phpUnitTutorial": ""
-        }
-    }
+    "classmap": [
+      "hubstaff.php",
+      "config.php"
+    ]
+  }
 }
