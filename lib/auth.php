@@ -1,33 +1,29 @@
-<?php 
-	namespace Hubstaff\Client
-	{
-		class userauth
-		{
-	   		public function auth($app_token, $email, $password,$url)
-			{
+<?php
+namespace Hubstaff\Client;
 
-				$fields["App-token"] = $app_token;
-				$fields["email"] = $email;
-				$fields["password"] = $password;
-			
-				$parameters["App-token"] = "header";
-				$parameters["email"] = "";
-				$parameters["password"] = "";
-				$curl = new curl;
+class userauth
+{
+    public function auth($app_token, $email, $password, $url)
+    {
 
-				$auth_data = json_decode($curl->send($fields, $parameters, $url, 1));
-				if(isset($auth_data->user))
-				{
-					$data['auth_token'] = $auth_data->user->auth_token;				
-				}
-				else {
-					$data['error'] =	$auth_data->error;
-				}
+        $fields["App-token"] = $app_token;
+        $fields["email"] = $email;
+        $fields["password"] = $password;
 
-				return $data;
-			}
-			
-		}
-	
-	}
-?>
+        $parameters["App-token"] = "header";
+        $parameters["email"] = "";
+        $parameters["password"] = "";
+        $curl = new Curl;
+
+        $auth_data = json_decode($curl->send($fields, $parameters, $url, 1));
+        if (isset($auth_data->user)) {
+            $data['auth_token'] = $auth_data->user->auth_token;
+        } else {
+            $data['error'] = $auth_data->error;
+        }
+
+        return $data;
+    }
+
+}
+

@@ -32,7 +32,7 @@
 				$parameters["Auth-Token"] = "header";
 				$parameters["App-token"] = "header";
 				
-				$curl = new curl;
+				$curl = new Curl;
 				$org_data = json_decode($curl->send($fields, $parameters, $url));		
 				return $org_data;	
 			}
@@ -66,7 +66,7 @@
 				$parameters["Auth-Token"] = "header";
 				$parameters["App-token"] = "header";
 				
-				$curl = new curl;
+				$curl = new Curl;
 	
 				$org_data = json_decode($curl->send($fields, $parameters, $url));		
 				return $org_data;	

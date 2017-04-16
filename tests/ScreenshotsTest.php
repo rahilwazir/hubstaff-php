@@ -1,9 +1,11 @@
 <?php
 
-class test_screenshots extends \PHPUnit_Framework_TestCase
+namespace Hubstaff;
+
+class ScreenshotsTest extends \PHPUnit_Framework_TestCase
 {
-    public $stub;
-    public $options = [];
+    private $stub;
+    private $options = [];
 
     public function __construct()
     {
@@ -18,14 +20,14 @@ class test_screenshots extends \PHPUnit_Framework_TestCase
 
     }
 
-    public function testScreenshots()
+    public function test_screenshots()
     {
         $starttime = "2016-03-14";
         $stoptime = "2016-03-20";
-
+        $expected = json_decode('{"screenshots":[]}', true);
         $this->stub->expects($this->any())
             ->method('screenshots')
-            ->will($this->returnValue(json_decode('{"screenshots":[]}', true)));
+            ->will($this->returnValue($expected));
 
         $this->assertArrayHasKey("screenshots", $this->stub->screenshots($starttime, $stoptime, $this->options, 0));
     }

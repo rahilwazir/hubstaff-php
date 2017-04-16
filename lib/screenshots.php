@@ -34,7 +34,7 @@
 				$parameters["stop_time"] = "";
 				$parameters["offset"] = "";
 				
-				$curl = new curl;
+				$curl = new Curl;
 				$screenshots_data = json_decode($curl->send($fields, $parameters, $url));	
 				return $screenshots_data;	
 			}

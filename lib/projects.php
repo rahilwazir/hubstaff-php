@@ -17,7 +17,7 @@
 				if($status)
 					$parameters["status"] = "";
 				
-				$curl = new curl;
+				$curl = new Curl;
 	
 				$proj_data = json_decode($curl->send($fields, $parameters, $url));		
 				return $proj_data;	
@@ -30,7 +30,7 @@
 				$parameters["Auth-Token"] = "header";
 				$parameters["App-token"] = "header";
 				
-				$curl = new curl;
+				$curl = new Curl;
 	
 				$proj_data = json_decode($curl->send($fields, $parameters, $url));	
 				return $proj_data;		
@@ -45,7 +45,7 @@
 				$parameters["App-token"] = "header";
 				$parameters["offset"] = "";
 				
-				$curl = new curl;
+				$curl = new Curl;
 	
 				$proj_data = json_decode($curl->send($fields, $parameters, $url));		
 				return $proj_data;	
