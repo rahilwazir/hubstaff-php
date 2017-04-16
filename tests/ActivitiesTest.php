@@ -3,8 +3,8 @@ namespace Hubstaff;
 
 class ActivitiesTest extends \PHPUnit_Framework_TestCase
 {
-    public $stub;
-    public $options = [];
+    private $stub;
+    private $options = [];
 
     public function __construct()
     {
