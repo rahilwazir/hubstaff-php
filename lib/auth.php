@@ -6,13 +6,13 @@ class userauth
     public function auth($app_token, $email, $password, $url)
     {
 
-        $fields["App-token"] = $app_token;
-        $fields["email"] = $email;
-        $fields["password"] = $password;
+        $fields['App-token'] = $app_token;
+        $fields['email'] = $email;
+        $fields['password'] = $password;
 
-        $parameters["App-token"] = "header";
-        $parameters["email"] = "";
-        $parameters["password"] = "";
+        $parameters['App-token'] = 'header';
+        $parameters['email'] = '';
+        $parameters['password'] = '';
         $curl = new Curl;
 
         $auth_data = json_decode($curl->send($fields, $parameters, $url, 1));

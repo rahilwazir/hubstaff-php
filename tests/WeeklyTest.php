@@ -8,10 +8,10 @@ class WeeklyTest extends \PHPUnit_Framework_TestCase
     public function __construct()
     {
         parent::__construct();
-        $this->options["users"] = "61188";
-        $this->options["projects"] = "112761";
-        $this->options["organizations"] = "27572";
-        $this->options["date"] = "2016-05-01";
+        $this->options['users'] = '61188';
+        $this->options['projects'] = '112761';
+        $this->options['organizations'] = '27572';
+        $this->options['date'] = '2016-05-01';
 
         $this->stub = $this->getMockBuilder('Hubstaff\Client')
             ->disableOriginalConstructor()
@@ -25,7 +25,7 @@ class WeeklyTest extends \PHPUnit_Framework_TestCase
             ->method('weekly_team')
             ->will($this->returnValue($expected));
 
-        $this->assertArrayHasKey("organizations", $this->stub->weekly_team($this->options));
+        $this->assertArrayHasKey('organizations', $this->stub->weekly_team($this->options));
     }
 
     public function testWeekly_my()
@@ -35,6 +35,6 @@ class WeeklyTest extends \PHPUnit_Framework_TestCase
             ->method('weekly_my')
             ->will($this->returnValue($expected));
 
-        $this->assertArrayHasKey("organizations", $this->stub->weekly_my($this->options));
+        $this->assertArrayHasKey('organizations', $this->stub->weekly_my($this->options));
     }
 }

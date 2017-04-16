@@ -17,7 +17,7 @@ class ProjectsTest extends \PHPUnit_Framework_TestCase
             ->method('projects')
             ->will($this->returnValue($expected));
 
-        $this->assertArrayHasKey("projects", $this->stub->projects());
+        $this->assertArrayHasKey('projects', $this->stub->projects());
     }
 
     public function test_find_project()
@@ -27,7 +27,7 @@ class ProjectsTest extends \PHPUnit_Framework_TestCase
             ->method('find_project')
             ->will($this->returnValue($expected));
 
-        $this->assertArrayHasKey("project", $this->stub->find_project(120320));
+        $this->assertArrayHasKey('project', $this->stub->find_project(120320));
     }
 
     public function test_find_project_members()
@@ -36,6 +36,6 @@ class ProjectsTest extends \PHPUnit_Framework_TestCase
         $this->stub->expects($this->any())
             ->method('find_project_members')
             ->will($this->returnValue($expected));
-        $this->assertArrayHasKey("users", $this->stub->find_project_members(61188));
+        $this->assertArrayHasKey('users', $this->stub->find_project_members(61188));
     }
 }

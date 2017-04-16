@@ -19,7 +19,7 @@ class OrganizationsTest extends \PHPUnit_Framework_TestCase
             ->method('organizations')
             ->will($this->returnValue($expected));
 
-        $this->assertArrayHasKey("organizations", $this->stub->organizations());
+        $this->assertArrayHasKey('organizations', $this->stub->organizations());
     }
 
     public function test_find_organization()
@@ -29,7 +29,7 @@ class OrganizationsTest extends \PHPUnit_Framework_TestCase
             ->method('find_organization')
             ->will($this->returnValue($expected));
 
-        $this->assertArrayHasKey("organization", $this->stub->find_organization(27572));
+        $this->assertArrayHasKey('organization', $this->stub->find_organization(27572));
 
     }
 
@@ -41,7 +41,7 @@ class OrganizationsTest extends \PHPUnit_Framework_TestCase
             ->method('find_org_projects')
             ->will($this->returnValue($expected));
 
-        $this->assertArrayHasKey("projects", $this->stub->find_org_projects(27572));
+        $this->assertArrayHasKey('projects', $this->stub->find_org_projects(27572));
     }
 
     public function test_find_org_members()
@@ -51,7 +51,7 @@ class OrganizationsTest extends \PHPUnit_Framework_TestCase
             ->method('find_org_members')
             ->will($this->returnValue($expected));
 
-        $this->assertArrayHasKey("users", $this->stub->find_org_members(27572));
+        $this->assertArrayHasKey('users', $this->stub->find_org_members(27572));
     }
 }
 
