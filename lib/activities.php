@@ -35,7 +35,7 @@
 				$parameters["stop_time"] = "";
 				$parameters["offset"] = "";
 				
-				$curl = new curl;
+				$curl = new Curl;
 	
 				$org_data = json_decode($curl->send($fields, $parameters, $url));		
 				return $org_data;	

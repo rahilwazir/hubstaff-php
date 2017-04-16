@@ -52,7 +52,7 @@
 				$parameters["start_date"] = "";
 				$parameters["end_date"] = "";
 				
-				$curl = new curl;
+				$curl = new Curl;
 				$custom_data = json_decode($curl->send($fields, $parameters, $url));		
 				return $custom_data;	
 			}
