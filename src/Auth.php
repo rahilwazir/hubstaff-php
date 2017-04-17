@@ -1,7 +1,7 @@
 <?php
-namespace Hubstaff\Client;
+namespace Hubstaff;
 
-class userauth
+class Auth
 {
     public function auth($app_token, $email, $password, $url)
     {
