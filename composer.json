@@ -1,24 +1,32 @@
 {
+  "name": "HookOps/hubstaff-php",
+  "type": "library",
+  "description": "A PHP toolkit for Hubstaff API",
+  "homepage": "https://github.com/HookOps/hubstaff-php",
+  "keywords": [
+    "php",
+    "hubstaff",
+    "hookops"
+  ],
   "require": {
-    "php": ">=5.6.30",
+    "php": "^5.6",
     "ext-curl": "*",
     "beberlei/assert": "2.*",
     "symfony/yaml": "2.*|3.*",
     "symfony/event-dispatcher": "~2.1|3.*"
   },
-  "require-dev": {
-    "phpunit/phpunit": "5.7",
-    "psr-4": {
-      "Hubstaff\\": "tests/"
-    }
-  },
   "autoload": {
-    "psr-0": {
-      "phpUnitTutorial": ""
-    },
     "classmap": [
       "hubstaff.php",
       "config.php"
     ]
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.7"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Hubstaff\\": "tests/"
+    }
   }
 }
