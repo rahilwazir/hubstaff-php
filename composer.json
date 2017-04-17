@@ -17,10 +17,10 @@
   },
   "autoload": {
     "psr-4": {
-      "Hubstaff\\": "src"
+      "Hubstaff\\": "src",
+      "Hubstaff\\Helper\\":"helper"
     },
     "classmap": [
-      "hubstaff.php",
       "config.php"
     ]
   },
