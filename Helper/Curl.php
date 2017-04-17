@@ -1,6 +1,6 @@
-<?php
-namespace Hubstaff\Client;
-class Curl
+<?php namespace Hubstaff\Helper;
+
+final class Curl
 {
     public function send($fields, $parameters, $url, $type = 0)
     {
