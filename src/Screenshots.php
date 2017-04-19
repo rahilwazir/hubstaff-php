@@ -1,16 +1,8 @@
 <?php namespace Hubstaff;
 
-use Hubstaff\helper\RequestInterface;
 
-final class Screenshots
+final class Screenshots extends AbstractResource
 {
-    private $client;
-
-    public function __construct(RequestInterface $client)
-    {
-        $this->client = $client;
-    }
-
     public function getScreenshots($auth_token, $app_token, $starttime, $endtime, $offset, $options, $url)
     {
         $fields['Auth-Token'] = $auth_token;

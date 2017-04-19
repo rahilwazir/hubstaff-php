@@ -1,17 +1,7 @@
-<?php
-namespace Hubstaff;
+<?php namespace Hubstaff;
 
-use Hubstaff\helper\RequestInterface;
-
-final class Activities
+final class Activities extends AbstractResource
 {
-    private $client;
-
-    public function __construct(RequestInterface $client)
-    {
-        $this->client = $client;
-    }
-
     public function getActivities($auth_token, $app_token, $starttime, $endtime, $offset, $options, $url)
     {
         $fields['Auth-Token'] = $auth_token;

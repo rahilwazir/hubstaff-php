@@ -1,16 +1,7 @@
 <?php namespace Hubstaff;
 
-use Hubstaff\helper\RequestInterface;
-
-final class Weekly
+final class Weekly extends AbstractResource
 {
-    private $client;
-
-    public function __construct(RequestInterface $client)
-    {
-        $this->client = $client;
-    }
-
     public function weeklyTeam($auth_token, $app_token, $options, $url)
     {
         $fields['Auth-Token'] = $auth_token;

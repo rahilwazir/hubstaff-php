@@ -1,17 +1,7 @@
-<?php
-namespace Hubstaff;
+<?php namespace Hubstaff;
 
-use Hubstaff\helper\RequestInterface;
-
-class Custom
+final class Custom extends AbstractResource
 {
-    private $client;
-
-    public function __construct(RequestInterface $client)
-    {
-        $this->client = $client;
-    }
-
     public function customReport($auth_token, $app_token, $start_date, $end_date, $options, $url)
     {
         $fields['Auth-Token'] = $auth_token;

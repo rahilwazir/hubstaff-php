@@ -1,15 +1,7 @@
-<?php
-namespace Hubstaff;
+<?php namespace Hubstaff;
 
-class Auth
+final class Auth extends AbstractResource
 {
-    private $client;
-
-    public function __construct(RequestInterface $client)
-    {
-        $this->client = $client;
-    }
-
     public function auth($app_token, $email, $password, $url)
     {
         $fields['App-token'] = $app_token;

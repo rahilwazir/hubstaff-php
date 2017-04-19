@@ -1,15 +1,7 @@
 <?php namespace Hubstaff;
 
-use Hubstaff\helper\RequestInterface;
-
-final class Users
+final class Users extends AbstractResource
 {
-    private $client;
-
-    public function __construct(RequestInterface $client)
-    {
-        $this->client = $client;
-    }
 
     public function getUsers($auth_token, $app_token, $organization_memberships, $project_memberships, $offset, $url)
     {

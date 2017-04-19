@@ -1,16 +1,7 @@
-<?php
-namespace Hubstaff;
+<?php namespace Hubstaff;
 
-use Hubstaff\helper\RequestInterface;
-
-class Notes
+final class Notes extends AbstractResource
 {
-    private $client;
-
-    public function __construct(RequestInterface $client)
-    {
-        $this->client = $client;
-    }
 
     public function getNotes($auth_token, $app_token, $starttime, $endtime, $offset, $options, $url)
     {

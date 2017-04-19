@@ -1,16 +1,8 @@
-<?php
-namespace Hubstaff;
+<?php namespace Hubstaff;
 
-use Hubstaff\helper\RequestInterface;
 
-class Organizations
+final class Organizations extends AbstractResource
 {
-    private $client;
-
-    public function __construct(RequestInterface $client)
-    {
-        $this->client = $client;
-    }
 
     public function getOrganizations($auth_token, $app_token, $offset, $url)
     {
