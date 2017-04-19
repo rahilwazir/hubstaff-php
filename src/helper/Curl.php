@@ -1,6 +1,6 @@
 <?php namespace Hubstaff\Helper;
 
-class Curl
+final class Curl implements RequestInterface
 {
     public function send($fields, $parameters, $url, $type = 0)
     {
