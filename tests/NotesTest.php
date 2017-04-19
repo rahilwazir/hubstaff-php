@@ -37,10 +37,10 @@ class NotesTest extends \PHPUnit_Framework_TestCase
         $expected = json_decode('{"note":{"id":716530,"description":"Practice Notes","time_slot":"2016-05-23T22:20:00Z","recorded_at":"2016-06-04T19:08:22Z","user_id":61188,"project_id":112761}}', true);
 
         $this->stub->expects($this->any())
-            ->method('find_note')
+            ->method('findNote')
             ->will($this->returnValue($expected));
 
-        $this->assertArrayHasKey('note', $this->stub->find_note(716530));
+        $this->assertArrayHasKey('note', $this->stub->findNote(716530));
     }
 }
 
