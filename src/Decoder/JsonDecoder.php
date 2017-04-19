@@ -1,6 +1,6 @@
 <?php namespace Hubstaff\Decoder;
 
-class JsonDecoderData implements DecodeDataInterface
+class JsonDecoder implements DecodeDataInterface
 {
     public function decode($data)
     {
