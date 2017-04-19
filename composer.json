@@ -17,8 +17,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Hubstaff\\": "src",
-      "Hubstaff\\Helper\\":"helper"
+      "Hubstaff\\": "src"
     },
     "classmap": [
       "config.php"
