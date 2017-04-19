@@ -37,12 +37,6 @@ final class Notes extends AbstractResource
 
     public function findNote($auth_token, $app_token, $url)
     {
-        $fields['Auth-Token'] = $auth_token;
-        $fields['App-token'] = $app_token;
-
-        $parameters['Auth-Token'] = 'header';
-        $parameters['App-token'] = 'header';
-
-        return $this->returnDecodedData($url, $fields, $parameters);
+        return $this->abstractResourceCall($auth_token, $app_token, $url);
     }
 }

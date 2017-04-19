@@ -21,6 +21,19 @@ abstract class AbstractResource
         $this->decoder = $decoder;
     }
 
+    public function abstractResourceCall($authToken, $applicationToken, $url)
+    {
+        $fields               = [];
+        $fields['Auth-Token'] = $authToken;
+        $fields['App-token']  = $applicationToken;
+
+        $parameters               = [];
+        $parameters['Auth-Token'] = 'header';
+        $parameters['App-token']  = 'header';
+
+        return $this->returnDecodedData($url, $fields, $parameters);
+    }
+
     /**
      * Return the response result decoded
      *
