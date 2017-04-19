@@ -8,11 +8,11 @@ abstract class AbstractResource
     /**
      * @var RequestInterface
      */
-    private $client;
+    protected $client;
     /**
      * @var DecodeDataInterface
      */
-    private $decoder;
+    protected $decoder;
 
     public function __construct(RequestInterface $client, DecodeDataInterface $decoder)
     {
