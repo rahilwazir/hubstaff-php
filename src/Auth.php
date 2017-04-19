@@ -12,7 +12,7 @@ final class Auth extends AbstractResource
         $parameters['email'] = '';
         $parameters['password'] = '';
 
-        $auth_data = json_decode($this->client->send($fields, $parameters, $url, 1));
+        $auth_data = $this->returnDecodedData($url, $fields, $parameters, 1);
 
         if (isset($auth_data->user)) {
             $data['auth_token'] = $auth_data->user->auth_token;

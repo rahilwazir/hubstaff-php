@@ -2,7 +2,6 @@
 
 final class Projects extends AbstractResource
 {
-
     public function getProjects($auth_token, $app_token, $status, $offset, $url)
     {
         $fields['Auth-Token'] = $auth_token;
@@ -17,7 +16,7 @@ final class Projects extends AbstractResource
         if ($status)
             $parameters['status'] = '';
 
-        return json_decode($this->client->send($fields, $parameters, $url));
+        return $this->returnDecodedData($url, $fields, $parameters);
     }
 
     public function findProject($auth_token, $app_token, $url)
@@ -28,8 +27,7 @@ final class Projects extends AbstractResource
         $parameters['Auth-Token'] = 'header';
         $parameters['App-token'] = 'header';
 
-
-        return json_decode($this->client->send($fields, $parameters, $url));
+        return $this->returnDecodedData($url, $fields, $parameters);
     }
 
     public function findProjectMembers($auth_token, $app_token, $offset, $url)
@@ -42,6 +40,6 @@ final class Projects extends AbstractResource
         $parameters['App-token'] = 'header';
         $parameters['offset'] = '';
 
-        return json_decode($this->client->send($fields, $parameters, $url));
+        return $this->returnDecodedData($url, $fields, $parameters);
     }
 }

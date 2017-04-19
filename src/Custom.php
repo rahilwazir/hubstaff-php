@@ -44,7 +44,6 @@ final class Custom extends AbstractResource
         $parameters['start_date'] = '';
         $parameters['end_date'] = '';
 
-        return json_decode($this->client->send($fields, $parameters, $url));
-
+        return $this->returnDecodedData($url, $fields, $parameters);
     }
 }

@@ -17,7 +17,7 @@ final class Users extends AbstractResource
         $parameters['project_memberships'] = '';
         $parameters['offset'] = '';
 
-        return json_decode($this->client->send($fields, $parameters, $url));
+        return $this->returnDecodedData($url, $fields, $parameters);
     }
 
     public function findUser($auth_token, $app_token, $url)
@@ -28,7 +28,7 @@ final class Users extends AbstractResource
         $parameters['Auth-Token'] = 'header';
         $parameters['App-token'] = 'header';
 
-        return json_decode($this->client->send($fields, $parameters, $url));
+        return $this->returnDecodedData($url, $fields, $parameters);
     }
 
     public function findUserOrgs($auth_token, $app_token, $offset, $url)
@@ -41,7 +41,7 @@ final class Users extends AbstractResource
         $parameters['App-token'] = 'header';
         $parameters['offset'] = 'header';
 
-        return json_decode($this->client->send($fields, $parameters, $url));
+        return $this->returnDecodedData($url, $fields, $parameters);
     }
 
     public function findUserProjects($auth_token, $app_token, $offset, $url)
@@ -54,7 +54,7 @@ final class Users extends AbstractResource
         $parameters['App-token'] = 'header';
         $parameters['offset'] = 'header';
 
-        return json_decode($this->client->send($fields, $parameters, $url));
+        return $this->returnDecodedData($url, $fields, $parameters);
     }
 }
 

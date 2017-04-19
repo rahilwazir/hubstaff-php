@@ -3,7 +3,6 @@
 
 final class Organizations extends AbstractResource
 {
-
     public function getOrganizations($auth_token, $app_token, $offset, $url)
     {
         $fields['Auth-Token'] = $auth_token;
@@ -14,8 +13,7 @@ final class Organizations extends AbstractResource
         $parameters['App-token'] = 'header';
         $parameters['offset'] = '';
 
-
-        return json_decode($this->client->send($fields, $parameters, $url));
+        return $this->returnDecodedData($url, $fields, $parameters);
     }
 
     public function findOrganization($auth_token, $app_token, $url)
@@ -26,7 +24,7 @@ final class Organizations extends AbstractResource
         $parameters['Auth-Token'] = 'header';
         $parameters['App-token'] = 'header';
 
-        return json_decode($this->client->send($fields, $parameters, $url));
+        return $this->returnDecodedData($url, $fields, $parameters);
     }
 
     public function findOrgProjects($auth_token, $app_token, $offset, $url)
@@ -39,7 +37,7 @@ final class Organizations extends AbstractResource
         $parameters['App-token'] = 'header';
         $parameters['offset'] = '';
 
-        return json_decode($this->client->send($fields, $parameters, $url));
+        return $this->returnDecodedData($url, $fields, $parameters);
     }
 
     public function findOrgMembers($auth_token, $app_token, $offset, $url)
@@ -52,6 +50,6 @@ final class Organizations extends AbstractResource
         $parameters['App-token'] = 'header';
         $parameters['offset'] = '';
 
-        return json_decode($this->client->send($fields, $parameters, $url));
+        return $this->returnDecodedData($url, $fields, $parameters);
     }
 }

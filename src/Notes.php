@@ -32,8 +32,7 @@ final class Notes extends AbstractResource
         $parameters['stop_time'] = '';
         $parameters['offset'] = '';
 
-
-        return json_decode($this->client->send($fields, $parameters, $url));
+        return $this->returnDecodedData($url, $fields, $parameters);
     }
 
     public function findNote($auth_token, $app_token, $url)
@@ -44,6 +43,6 @@ final class Notes extends AbstractResource
         $parameters['Auth-Token'] = 'header';
         $parameters['App-token'] = 'header';
 
-        return json_decode($this->client->send($fields, $parameters, $url));
+        return $this->returnDecodedData($url, $fields, $parameters);
     }
 }

@@ -32,7 +32,7 @@ final class Activities extends AbstractResource
         $parameters['stop_time'] = '';
         $parameters['offset'] = '';
 
-        return json_decode($this->client->send($fields, $parameters, $url));
+        return $this->returnDecodedData($url, $fields, $parameters);
     }
 }
 

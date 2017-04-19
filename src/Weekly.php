@@ -23,11 +23,10 @@ final class Weekly extends AbstractResource
             $parameters['users'] = '';
         }
 
-
         $parameters['Auth-Token'] = 'header';
         $parameters['App-token'] = 'header';
 
-        return json_decode($this->client->send($fields, $parameters, $url));
+        return $this->returnDecodedData($url, $fields, $parameters);
     }
 
     public function weeklyMy($auth_token, $app_token, $options, $url)
@@ -54,6 +53,6 @@ final class Weekly extends AbstractResource
         $parameters['Auth-Token'] = 'header';
         $parameters['App-token'] = 'header';
 
-        return json_decode($this->client->send($fields, $parameters, $url));
+        return $this->returnDecodedData($url, $fields, $parameters);
     }
 }
