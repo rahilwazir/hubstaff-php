@@ -29,59 +29,59 @@ class CustomTest extends \PHPUnit_Framework_TestCase
     {
         $expected = json_decode('{"organizations":[{"id":27572,"name":"Hook Engine","duration":7874,"dates":[{"date":"2016-05-23","duration":7874,"users":[{"id":61188,"name":"Raymond Cudjoe","duration":7874,"projects":[{"id":112761,"name":"Build Ruby Gem","duration":7874}]}]}]}]}', true);
         $this->stub->expects($this->any())
-            ->method('custom_date_team')
+            ->method('customDateTeam')
             ->will($this->returnValue($expected));
 
-        $this->assertArrayHasKey('organizations', $this->stub->custom_date_team($this->start_date, $this->end_date, $this->options));
+        $this->assertArrayHasKey('organizations', $this->stub->customDateTeam($this->start_date, $this->end_date, $this->options));
     }
 
     public function test_custom_date_my()
     {
         $expected = json_decode('{"organizations":[{"id":27572,"name":"Hook Engine","duration":7874,"dates":[{"date":"2016-05-23","duration":7874,"users":[{"id":61188,"name":"Raymond Cudjoe","duration":7874,"projects":[{"id":112761,"name":"Build Ruby Gem","duration":7874}]}]}]}]}', true);
         $this->stub->expects($this->any())
-            ->method('custom_date_my')
+            ->method('customDateMy')
             ->will($this->returnValue($expected));
 
-        $this->assertArrayHasKey('organizations', $this->stub->custom_date_my($this->start_date, $this->end_date, $this->options));
+        $this->assertArrayHasKey('organizations', $this->stub->customDateMy($this->start_date, $this->end_date, $this->options));
     }
 
     public function test_custom_member_team()
     {
         $expected = json_decode('{"organizations":[{"id":27572,"name":"Hook Engine","duration":7874,"dates":[{"date":"2016-05-23","duration":7874,"users":[{"id":61188,"name":"Raymond Cudjoe","duration":7874,"projects":[{"id":112761,"name":"Build Ruby Gem","duration":7874}]}]}]}]}', true);
         $this->stub->expects($this->any())
-            ->method('custom_member_team')
+            ->method('customMemberTeam')
             ->will($this->returnValue($expected));
 
-        $this->assertArrayHasKey('organizations', $this->stub->custom_member_team($this->start_date, $this->end_date, $this->options));
+        $this->assertArrayHasKey('organizations', $this->stub->customMemberTeam($this->start_date, $this->end_date, $this->options));
     }
 
     public function test_custom_member_my()
     {
         $expected = json_decode('{"organizations":[{"id":27572,"name":"Hook Engine","duration":7874,"dates":[{"date":"2016-05-23","duration":7874,"users":[{"id":61188,"name":"Raymond Cudjoe","duration":7874,"projects":[{"id":112761,"name":"Build Ruby Gem","duration":7874}]}]}]}]}', true);
         $this->stub->expects($this->any())
-            ->method('custom_member_my')
+            ->method('customMemberMy')
             ->will($this->returnValue($expected));
 
-        $this->assertArrayHasKey('organizations', $this->stub->custom_member_my($this->start_date, $this->end_date, $this->options));
+        $this->assertArrayHasKey('organizations', $this->stub->customMemberMy($this->start_date, $this->end_date, $this->options));
     }
 
     public function test_custom_project_team()
     {
         $expected = json_decode('{"organizations":[{"id":27572,"name":"Hook Engine","duration":7874,"dates":[{"date":"2016-05-23","duration":7874,"users":[{"id":61188,"name":"Raymond Cudjoe","duration":7874,"projects":[{"id":112761,"name":"Build Ruby Gem","duration":7874}]}]}]}]}', true);
         $this->stub->expects($this->any())
-            ->method('custom_project_team')
+            ->method('customProjectTeam')
             ->will($this->returnValue($expected));
 
-        $this->assertArrayHasKey('organizations', $this->stub->custom_project_team($this->start_date, $this->end_date, $this->options));
+        $this->assertArrayHasKey('organizations', $this->stub->customProjectTeam($this->start_date, $this->end_date, $this->options));
     }
 
     public function test_custom_project_my()
     {
         $expected = json_decode('{"organizations":[{"id":27572,"name":"Hook Engine","duration":7874,"dates":[{"date":"2016-05-23","duration":7874,"users":[{"id":61188,"name":"Raymond Cudjoe","duration":7874,"projects":[{"id":112761,"name":"Build Ruby Gem","duration":7874}]}]}]}]}', true);
         $this->stub->expects($this->any())
-            ->method('custom_project_my')
+            ->method('customProjectMy')
             ->will($this->returnValue($expected));
 
-        $this->assertArrayHasKey('organizations', $this->stub->custom_project_my($this->start_date, $this->end_date, $this->options));
+        $this->assertArrayHasKey('organizations', $this->stub->customProjectMy($this->start_date, $this->end_date, $this->options));
     }
 }
