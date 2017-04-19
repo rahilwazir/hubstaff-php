@@ -37,20 +37,20 @@ class UsersTest extends \PHPUnit_Framework_TestCase
     {
         $expected = json_decode('{ "projects": [ { "id": 112761, "name": "Build Ruby Gem", "last_activity": "2016-05-24T01:25:21Z", "status": "Active", "description": null }, { "id": 120320, "name": "Hubstaff API tutorial", "last_activity": null, "status": "Active", "description": null } ] }', true);
         $this->stub->expects($this->any())
-            ->method('find_user_projects')
+            ->method('findUserProjects')
             ->will($this->returnValue($expected));
 
-        $this->assertArrayHasKey('projects', $this->stub->find_user_projects(61188));
+        $this->assertArrayHasKey('projects', $this->stub->findUserProjects(61188));
     }
 
     public function testFind_user_orgs()
     {
         $expected = json_decode('{ "organizations": [ { "id": 27572, "name": "Hook Engine", "last_activity": "2016-05-24T01:25:21Z" } ] } ', true);
         $this->stub->expects($this->any())
-            ->method('find_user_orgs')
+            ->method('findUserOrgs')
             ->will($this->returnValue($expected));
 
-        $this->assertArrayHasKey('organizations', $this->stub->find_user_orgs(61188));
+        $this->assertArrayHasKey('organizations', $this->stub->findUserOrgs(61188));
     }
 }
 
