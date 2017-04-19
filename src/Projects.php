@@ -1,7 +1,16 @@
-<?php
-namespace Hubstaff;
+<?php namespace Hubstaff;
+
+use Hubstaff\helper\RequestInterface;
+
 class Projects
 {
+    private $client;
+
+    public function __construct(RequestInterface $client)
+    {
+        $this->client = $client;
+    }
+
     public function getProjects($auth_token, $app_token, $status, $offset, $url)
     {
         $fields['Auth-Token'] = $auth_token;
@@ -16,10 +25,7 @@ class Projects
         if ($status)
             $parameters['status'] = '';
 
-        $curl = new Curl;
-
-        $proj_data = json_decode($curl->send($fields, $parameters, $url));
-        return $proj_data;
+        return json_decode($this->client->send($fields, $parameters, $url));
     }
 
     public function findProject($auth_token, $app_token, $url)
@@ -30,10 +36,8 @@ class Projects
         $parameters['Auth-Token'] = 'header';
         $parameters['App-token'] = 'header';
 
-        $curl = new Curl;
 
-        $proj_data = json_decode($curl->send($fields, $parameters, $url));
-        return $proj_data;
+        return json_decode($this->client->send($fields, $parameters, $url));
     }
 
     public function findProjectMembers($auth_token, $app_token, $offset, $url)
@@ -46,9 +50,6 @@ class Projects
         $parameters['App-token'] = 'header';
         $parameters['offset'] = '';
 
-        $curl = new Curl;
-
-        $proj_data = json_decode($curl->send($fields, $parameters, $url));
-        return $proj_data;
+        return json_decode($this->client->send($fields, $parameters, $url));
     }
 }

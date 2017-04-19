@@ -1,8 +1,17 @@
 <?php
 namespace Hubstaff;
 
+use Hubstaff\helper\RequestInterface;
+
 class Organizations
 {
+    private $client;
+
+    public function __construct(RequestInterface $client)
+    {
+        $this->client = $client;
+    }
+
     public function getOrganizations($auth_token, $app_token, $offset, $url)
     {
         $fields['Auth-Token'] = $auth_token;
@@ -13,10 +22,8 @@ class Organizations
         $parameters['App-token'] = 'header';
         $parameters['offset'] = '';
 
-        $curl = new Curl;
 
-        $org_data = json_decode($curl->send($fields, $parameters, $url));
-        return $org_data;
+        return json_decode($this->client->send($fields, $parameters, $url));
     }
 
     public function findOrganization($auth_token, $app_token, $url)
@@ -27,10 +34,7 @@ class Organizations
         $parameters['Auth-Token'] = 'header';
         $parameters['App-token'] = 'header';
 
-        $curl = new Curl;
-
-        $org_data = json_decode($curl->send($fields, $parameters, $url));
-        return $org_data;
+        return json_decode($this->client->send($fields, $parameters, $url));
     }
 
     public function findOrgProjects($auth_token, $app_token, $offset, $url)
@@ -43,10 +47,7 @@ class Organizations
         $parameters['App-token'] = 'header';
         $parameters['offset'] = '';
 
-        $curl = new Curl;
-
-        $org_data = json_decode($curl->send($fields, $parameters, $url));
-        return $org_data;
+        return json_decode($this->client->send($fields, $parameters, $url));
     }
 
     public function findOrgMembers($auth_token, $app_token, $offset, $url)
@@ -59,9 +60,6 @@ class Organizations
         $parameters['App-token'] = 'header';
         $parameters['offset'] = '';
 
-        $curl = new Curl;
-
-        $org_data = json_decode($curl->send($fields, $parameters, $url));
-        return $org_data;
+        return json_decode($this->client->send($fields, $parameters, $url));
     }
 }

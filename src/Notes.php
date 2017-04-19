@@ -1,8 +1,17 @@
 <?php
 namespace Hubstaff;
 
-class notes
+use Hubstaff\helper\RequestInterface;
+
+class Notes
 {
+    private $client;
+
+    public function __construct(RequestInterface $client)
+    {
+        $this->client = $client;
+    }
+
     public function getNotes($auth_token, $app_token, $starttime, $endtime, $offset, $options, $url)
     {
         $fields['Auth-Token'] = $auth_token;
@@ -32,10 +41,8 @@ class notes
         $parameters['stop_time'] = '';
         $parameters['offset'] = '';
 
-        $curl = new Curl;
 
-        $org_data = json_decode($curl->send($fields, $parameters, $url));
-        return $org_data;
+        return json_decode($this->client->send($fields, $parameters, $url));
     }
 
     public function findNote($auth_token, $app_token, $url)
@@ -46,9 +53,6 @@ class notes
         $parameters['Auth-Token'] = 'header';
         $parameters['App-token'] = 'header';
 
-        $curl = new Curl;
-
-        $user_data = json_decode($curl->send($fields, $parameters, $url));
-        return $user_data;
+        return json_decode($this->client->send($fields, $parameters, $url));
     }
 }

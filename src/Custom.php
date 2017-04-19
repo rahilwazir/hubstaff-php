@@ -1,8 +1,17 @@
 <?php
 namespace Hubstaff;
 
-class custom
+use Hubstaff\helper\RequestInterface;
+
+class Custom
 {
+    private $client;
+
+    public function __construct(RequestInterface $client)
+    {
+        $this->client = $client;
+    }
+
     public function customReport($auth_token, $app_token, $start_date, $end_date, $options, $url)
     {
         $fields['Auth-Token'] = $auth_token;
@@ -45,8 +54,7 @@ class custom
         $parameters['start_date'] = '';
         $parameters['end_date'] = '';
 
-        $curl = new Curl;
-        $custom_data = json_decode($curl->send($fields, $parameters, $url));
-        return $custom_data;
+        return json_decode($this->client->send($fields, $parameters, $url));
+
     }
 }

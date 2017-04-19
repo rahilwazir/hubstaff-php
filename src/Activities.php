@@ -1,10 +1,17 @@
 <?php
 namespace Hubstaff;
 
-use Hubstaff\Helper\Curl;
+use Hubstaff\helper\RequestInterface;
 
 final class Activities
 {
+    private $client;
+
+    public function __construct(RequestInterface $client)
+    {
+        $this->client = $client;
+    }
+
     public function getActivities($auth_token, $app_token, $starttime, $endtime, $offset, $options, $url)
     {
         $fields['Auth-Token'] = $auth_token;
@@ -16,10 +23,12 @@ final class Activities
             $fields['organizations'] = $options['organizations'];
             $parameters['organizations'] = '';
         }
+
         if (isset($options['projects'])) {
             $fields['projects'] = $options['projects'];
             $parameters['projects'] = '';
         }
+
         if (isset($options['users'])) {
             $fields['users'] = $options['users'];
             $parameters['users'] = '';
@@ -27,17 +36,13 @@ final class Activities
 
         $fields['offset'] = $offset;
 
-
         $parameters['Auth-Token'] = 'header';
         $parameters['App-token'] = 'header';
         $parameters['start_time'] = '';
         $parameters['stop_time'] = '';
         $parameters['offset'] = '';
 
-        $curl = new Curl;
-
-        $org_data = json_decode($curl->send($fields, $parameters, $url));
-        return $org_data;
+        return json_decode($this->client->send($fields, $parameters, $url));
     }
 }
 

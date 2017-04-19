@@ -1,7 +1,16 @@
 <?php namespace Hubstaff;
 
+use Hubstaff\helper\RequestInterface;
+
 final class Users
 {
+    private $client;
+
+    public function __construct(RequestInterface $client)
+    {
+        $this->client = $client;
+    }
+
     public function getUsers($auth_token, $app_token, $organization_memberships, $project_memberships, $offset, $url)
     {
         $fields['Auth-Token'] = $auth_token;
@@ -16,10 +25,7 @@ final class Users
         $parameters['project_memberships'] = '';
         $parameters['offset'] = '';
 
-        $curl = new Curl;
-
-        $users_data = json_decode($curl->send($fields, $parameters, $url));
-        return $users_data;
+        return json_decode($this->client->send($fields, $parameters, $url));
     }
 
     public function findUser($auth_token, $app_token, $url)
@@ -30,10 +36,7 @@ final class Users
         $parameters['Auth-Token'] = 'header';
         $parameters['App-token'] = 'header';
 
-        $curl = new Curl;
-
-        $user_data = json_decode($curl->send($fields, $parameters, $url));
-        return $user_data;
+        return json_decode($this->client->send($fields, $parameters, $url));
     }
 
     public function findUserOrgs($auth_token, $app_token, $offset, $url)
@@ -46,10 +49,7 @@ final class Users
         $parameters['App-token'] = 'header';
         $parameters['offset'] = 'header';
 
-        $curl = new Curl;
-
-        $org_data = json_decode($curl->send($fields, $parameters, $url));
-        return $org_data;
+        return json_decode($this->client->send($fields, $parameters, $url));
     }
 
     public function findUserProjects($auth_token, $app_token, $offset, $url)
@@ -62,10 +62,7 @@ final class Users
         $parameters['App-token'] = 'header';
         $parameters['offset'] = 'header';
 
-        $curl = new Curl;
-
-        $org_data = json_decode($curl->send($fields, $parameters, $url));
-        return $org_data;
+        return json_decode($this->client->send($fields, $parameters, $url));
     }
 }
 

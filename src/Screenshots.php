@@ -1,7 +1,16 @@
 <?php namespace Hubstaff;
 
+use Hubstaff\helper\RequestInterface;
+
 final class Screenshots
 {
+    private $client;
+
+    public function __construct(RequestInterface $client)
+    {
+        $this->client = $client;
+    }
+
     public function getScreenshots($auth_token, $app_token, $starttime, $endtime, $offset, $options, $url)
     {
         $fields['Auth-Token'] = $auth_token;
@@ -30,8 +39,6 @@ final class Screenshots
         $parameters['stop_time'] = '';
         $parameters['offset'] = '';
 
-        $curl = new Curl;
-        $screenshots_data = json_decode($curl->send($fields, $parameters, $url));
-        return $screenshots_data;
+        return json_decode($this->client->send($fields, $parameters, $url));
     }
 }

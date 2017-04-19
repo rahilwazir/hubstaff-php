@@ -1,7 +1,16 @@
 <?php namespace Hubstaff;
 
-class Weekly
+use Hubstaff\helper\RequestInterface;
+
+final class Weekly
 {
+    private $client;
+
+    public function __construct(RequestInterface $client)
+    {
+        $this->client = $client;
+    }
+
     public function weeklyTeam($auth_token, $app_token, $options, $url)
     {
         $fields['Auth-Token'] = $auth_token;
@@ -27,9 +36,7 @@ class Weekly
         $parameters['Auth-Token'] = 'header';
         $parameters['App-token'] = 'header';
 
-        $curl = new Curl;
-        $org_data = json_decode($curl->send($fields, $parameters, $url));
-        return $org_data;
+        return json_decode($this->client->send($fields, $parameters, $url));
     }
 
     public function weeklyMy($auth_token, $app_token, $options, $url)
@@ -53,13 +60,9 @@ class Weekly
             $parameters['users'] = '';
         }
 
-
         $parameters['Auth-Token'] = 'header';
         $parameters['App-token'] = 'header';
 
-        $curl = new Curl;
-
-        $org_data = json_decode($curl->send($fields, $parameters, $url));
-        return $org_data;
+        return json_decode($this->client->send($fields, $parameters, $url));
     }
 }
