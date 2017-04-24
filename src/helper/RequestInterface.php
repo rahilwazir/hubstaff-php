@@ -1,4 +1,4 @@
-<?php namespace Hubstaff\helper;
+<?php namespace Hubstaff\Helper;
 
 interface RequestInterface
 {
