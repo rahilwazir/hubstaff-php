@@ -28,7 +28,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Hubstaff\\": "tests/"
+      "HubstaffTest\\": "tests/"
     }
   }
 }
