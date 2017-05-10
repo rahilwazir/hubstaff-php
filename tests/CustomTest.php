@@ -56,6 +56,53 @@ final class CustomTest extends PHPUnit_Framework_TestCase
         $custom->customReport($authToken, $appToken, $startDate, $endDate, $options, $url);
     }
 
+    /**
+     * @test
+     */
+    public function it_should_pass_configured_field_and_parameters_for_project_options()
+    {
+        $projects = uniqid('projects', true);
+        $authToken = uniqid('authToken', true);
+        $appToken = uniqid('appToken', true);
+        $startDate = uniqid('startDate', true);
+        $endDate = uniqid('endToken', true);
+        $url = uniqid('url', true);
+
+        $options = [
+            'projects' => $projects,
+        ];
+
+        $parameters = [
+            'projects'   => '',
+            'Auth-Token' => 'header',
+            'App-token'  => 'header',
+            'start_date' => '',
+            'end_date'   => '',
+        ];
+
+        $fields = [
+            'Auth-Token' => $authToken,
+            'start_date' => $startDate,
+            'end_date'   => $endDate,
+            'projects'   => $projects,
+            'App-token'  => $appToken,
+        ];
+
+        /* @var $client ClientInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $client = $this->createMock(ClientInterface::class);
+        $client->expects(self::once())
+            ->method('send')
+            ->with($fields, $parameters, $url, 0)
+            ->will(self::returnValue([]));
+
+        /* @var $decoder DecodeDataInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $decoder = $this->createMock(DecodeDataInterface::class);
+        $decoder->expects(self::once())->method('decode');
+
+        $custom = new Custom($client, $decoder);
+        $custom->customReport($authToken, $appToken, $startDate, $endDate, $options, $url);
+    }
+
 
     /**
      * @todo move it to abstract resource
