@@ -1,36 +1,17 @@
 <?php
 
-namespace Hubstaff;
+namespace HubstaffTest;
 
+use Hubstaff\Custom;
 use Hubstaff\Decoder\DecodeDataInterface;
-use Hubstaff\helper\RequestInterface;
+use Hubstaff\helper\ClientInterface;
 use PHPUnit_Framework_TestCase;
 
+/**
+ * @covers \Hubstaff\Custom
+ */
 final class CustomTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|Client
-     */
-    private $stub;
-    private $options = [];
-    private $start_date = '2016-05-23';
-    private $end_date = '2016-05-25';
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function setUp()
-    {
-        $this->options['users'] = '61188';
-        $this->options['projects'] = '112761';
-        $this->options['organizations'] = '27572';
-        $this->options['show_tasks'] = '1';
-        $this->options['show_notes'] = '1';
-        $this->options['show_activity'] = '1';
-        $this->options['include_archived'] = '1';
-    }
-
-
     public function test_custom_report_organizations()
     {
         $organizations = uniqid('organization', true);
@@ -40,7 +21,10 @@ final class CustomTest extends PHPUnit_Framework_TestCase
         $endDate = uniqid('endToken', true);
         $url = uniqid('url', true);
 
-        $options['organizations'] = $organizations;
+        $options = [
+            'organizations' => $organizations,
+        ];
+
         $parameters = [
             'organizations' => '',
             'Auth-Token'    => 'header',
@@ -57,8 +41,8 @@ final class CustomTest extends PHPUnit_Framework_TestCase
             'App-token'     => $appToken,
         ];
 
-        /* @var $client RequestInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $client = $this->createMock(RequestInterface::class);
+        /* @var $client ClientInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $client = $this->createMock(ClientInterface::class);
         $client->expects(self::once())
             ->method('send')
             ->with($fields, $parameters, $url, 0)
@@ -80,8 +64,8 @@ final class CustomTest extends PHPUnit_Framework_TestCase
     {
         $expected = '{"organizations":[{"id":27572,"name":"Hook Engine","duration":7874,"dates":[{"date":"2016-05-23","duration":7874,"users":[{"id":61188,"name":"Raymond Cudjoe","duration":7874,"projects":[{"id":112761,"name":"Build Ruby Gem","duration":7874}]}]}]}]}';
 
-        /* @var $client RequestInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $client = $this->createMock(RequestInterface::class);
+        /* @var $client ClientInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $client = $this->createMock(ClientInterface::class);
         $client->expects(self::once())->method('send')->will(self::returnValue($expected));
 
         /* @var $decoder DecodeDataInterface|\PHPUnit_Framework_MockObject_MockObject */
