@@ -1,12 +1,12 @@
 <?php namespace Hubstaff;
 
 use Hubstaff\Decoder\DecodeDataInterface;
-use Hubstaff\helper\RequestInterface;
+use Hubstaff\helper\ClientInterface;
 
 abstract class AbstractResource
 {
     /**
-     * @var RequestInterface
+     * @var ClientInterface
      */
     protected $client;
 
@@ -15,7 +15,7 @@ abstract class AbstractResource
      */
     protected $decoder;
 
-    public function __construct(RequestInterface $client, DecodeDataInterface $decoder)
+    public function __construct(ClientInterface $client, DecodeDataInterface $decoder)
     {
         $this->client  = $client;
         $this->decoder = $decoder;
