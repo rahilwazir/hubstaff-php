@@ -86,6 +86,31 @@ final class CustomTest extends PHPUnit_Framework_TestCase
                     'projects' => uniqid('projects', true),
                 ],
             ],
+            [
+                [
+                    'users' => uniqid('users', true),
+                ],
+            ],
+            [
+                [
+                    'show_tasks' => uniqid('show_tasks', true),
+                ],
+            ],
+            [
+                [
+                    'show_notes' => uniqid('show_notes', true),
+                ],
+            ],
+            [
+                [
+                    'show_activity' => uniqid('show_activity', true),
+                ],
+            ],
+            [
+                [
+                    'include_archived' => uniqid('include_archived', true),
+                ],
+            ],
         ];
     }
 
