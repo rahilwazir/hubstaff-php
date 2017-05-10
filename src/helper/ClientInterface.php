@@ -1,6 +1,6 @@
 <?php namespace Hubstaff\Helper;
 
-interface RequestInterface
+interface ClientInterface
 {
     public function send($fields, $parameters, $url, $type = 0);
 }
