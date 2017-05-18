@@ -1,87 +1,141 @@
 <?php
-namespace Hubstaff;
 
-class CustomTest extends \PHPUnit_Framework_TestCase
+namespace HubstaffTest;
+
+use Hubstaff\Custom;
+use Hubstaff\Decoder\DecodeDataInterface;
+use Hubstaff\helper\ClientInterface;
+use PHPUnit_Framework_TestCase;
+
+/**
+ * @covers \Hubstaff\Custom
+ */
+final class CustomTest extends PHPUnit_Framework_TestCase
 {
-    private $stub;
-    private $options = [];
-    private $start_date = '2016-05-23';
-    private $end_date = '2016-05-25';
+    /**
+     * @var ClientInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $client;
 
-    public function __construct()
+    /**
+     * @var DecodeDataInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $decoder;
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function setUp()
     {
-        parent::__construct();
-        $this->options['users'] = '61188';
-        $this->options['projects'] = '112761';
-        $this->options['organizations'] = '27572';
-        $this->options['show_tasks'] = '1';
-        $this->options['show_notes'] = '1';
-        $this->options['show_activity'] = '1';
-        $this->options['include_archived'] = '1';
-
-
-        $this->stub = $this->getMockBuilder('Hubstaff\Client')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->client = $this->createMock(ClientInterface::class);
+        $this->decoder = $this->createMock(DecodeDataInterface::class);
     }
 
+    /**
+     * @test
+     * @dataProvider provider_valid_options
+     */
+    public function it_should_configure_field_and_parameters(array $options)
+    {
+        $authToken = uniqid('authToken', true);
+        $appToken = uniqid('appToken', true);
+        $startDate = uniqid('startDate', true);
+        $endDate = uniqid('endToken', true);
+        $url = uniqid('url', true);
+
+        $optionName = key($options);
+        $parameters = [
+            $optionName => '',
+            'Auth-Token'    => 'header',
+            'App-token'     => 'header',
+            'start_date'    => '',
+            'end_date'      => '',
+        ];
+
+        $fields = array_merge(
+            [
+                'Auth-Token'    => $authToken,
+                'start_date'    => $startDate,
+                'end_date'      => $endDate,
+                'App-token'     => $appToken,
+            ],
+            $options
+        );
+
+        $this->client->expects(self::once())
+            ->method('send')
+            ->with($fields, $parameters, $url, 0)
+            ->will(self::returnValue([]));
+
+        $this->decoder->expects(self::once())->method('decode');
+
+        $custom = new Custom($this->client, $this->decoder);
+        $custom->customReport($authToken, $appToken, $startDate, $endDate, $options, $url);
+    }
+
+    public function provider_valid_options()
+    {
+        return [
+            [
+                [
+                    'organizations' => uniqid('organization', true),
+                ],
+            ],
+            [
+                [
+                    'projects' => uniqid('projects', true),
+                ],
+            ],
+            [
+                [
+                    'users' => uniqid('users', true),
+                ],
+            ],
+            [
+                [
+                    'show_tasks' => uniqid('show_tasks', true),
+                ],
+            ],
+            [
+                [
+                    'show_notes' => uniqid('show_notes', true),
+                ],
+            ],
+            [
+                [
+                    'show_activity' => uniqid('show_activity', true),
+                ],
+            ],
+            [
+                [
+                    'include_archived' => uniqid('include_archived', true),
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @todo move it to abstract resource
+     */
     public function test_custom_date_team()
     {
-        $expected = json_decode('{"organizations":[{"id":27572,"name":"Hook Engine","duration":7874,"dates":[{"date":"2016-05-23","duration":7874,"users":[{"id":61188,"name":"Raymond Cudjoe","duration":7874,"projects":[{"id":112761,"name":"Build Ruby Gem","duration":7874}]}]}]}]}', true);
-        $this->stub->expects($this->any())
-            ->method('custom_date_team')
-            ->will($this->returnValue($expected));
+        $expected = '{"organizations":[{"id":27572,"name":"Hook Engine","duration":7874,"dates":[{"date":"2016-05-23","duration":7874,"users":[{"id":61188,"name":"Raymond Cudjoe","duration":7874,"projects":[{"id":112761,"name":"Build Ruby Gem","duration":7874}]}]}]}]}';
 
-        $this->assertArrayHasKey('organizations', $this->stub->custom_date_team($this->start_date, $this->end_date, $this->options));
-    }
+        $this->client->expects(self::once())->method('send')->will(self::returnValue($expected));
 
-    public function test_custom_date_my()
-    {
-        $expected = json_decode('{"organizations":[{"id":27572,"name":"Hook Engine","duration":7874,"dates":[{"date":"2016-05-23","duration":7874,"users":[{"id":61188,"name":"Raymond Cudjoe","duration":7874,"projects":[{"id":112761,"name":"Build Ruby Gem","duration":7874}]}]}]}]}', true);
-        $this->stub->expects($this->any())
-            ->method('custom_date_my')
-            ->will($this->returnValue($expected));
+        $this->decoder->expects(self::once())->method('decode')->will(self::returnValue(json_decode($expected, true)));
 
-        $this->assertArrayHasKey('organizations', $this->stub->custom_date_my($this->start_date, $this->end_date, $this->options));
-    }
+        $custom = new Custom($this->client, $this->decoder);
 
-    public function test_custom_member_team()
-    {
-        $expected = json_decode('{"organizations":[{"id":27572,"name":"Hook Engine","duration":7874,"dates":[{"date":"2016-05-23","duration":7874,"users":[{"id":61188,"name":"Raymond Cudjoe","duration":7874,"projects":[{"id":112761,"name":"Build Ruby Gem","duration":7874}]}]}]}]}', true);
-        $this->stub->expects($this->any())
-            ->method('custom_member_team')
-            ->will($this->returnValue($expected));
+        $actual = $custom->customReport(
+            'auth_token',
+            'app_token',
+            'start_date',
+            'end_date',
+            'options',
+            'url'
+        );
 
-        $this->assertArrayHasKey('organizations', $this->stub->custom_member_team($this->start_date, $this->end_date, $this->options));
-    }
-
-    public function test_custom_member_my()
-    {
-        $expected = json_decode('{"organizations":[{"id":27572,"name":"Hook Engine","duration":7874,"dates":[{"date":"2016-05-23","duration":7874,"users":[{"id":61188,"name":"Raymond Cudjoe","duration":7874,"projects":[{"id":112761,"name":"Build Ruby Gem","duration":7874}]}]}]}]}', true);
-        $this->stub->expects($this->any())
-            ->method('custom_member_my')
-            ->will($this->returnValue($expected));
-
-        $this->assertArrayHasKey('organizations', $this->stub->custom_member_my($this->start_date, $this->end_date, $this->options));
-    }
-
-    public function test_custom_project_team()
-    {
-        $expected = json_decode('{"organizations":[{"id":27572,"name":"Hook Engine","duration":7874,"dates":[{"date":"2016-05-23","duration":7874,"users":[{"id":61188,"name":"Raymond Cudjoe","duration":7874,"projects":[{"id":112761,"name":"Build Ruby Gem","duration":7874}]}]}]}]}', true);
-        $this->stub->expects($this->any())
-            ->method('custom_project_team')
-            ->will($this->returnValue($expected));
-
-        $this->assertArrayHasKey('organizations', $this->stub->custom_project_team($this->start_date, $this->end_date, $this->options));
-    }
-
-    public function test_custom_project_my()
-    {
-        $expected = json_decode('{"organizations":[{"id":27572,"name":"Hook Engine","duration":7874,"dates":[{"date":"2016-05-23","duration":7874,"users":[{"id":61188,"name":"Raymond Cudjoe","duration":7874,"projects":[{"id":112761,"name":"Build Ruby Gem","duration":7874}]}]}]}]}', true);
-        $this->stub->expects($this->any())
-            ->method('custom_project_my')
-            ->will($this->returnValue($expected));
-
-        $this->assertArrayHasKey('organizations', $this->stub->custom_project_my($this->start_date, $this->end_date, $this->options));
+        self::assertEquals(json_decode($expected, true), $actual);
     }
 }

@@ -22,19 +22,19 @@ class WeeklyTest extends \PHPUnit_Framework_TestCase
     {
         $expected = json_decode('{"organizations":[]}', true);
         $this->stub->expects($this->any())
-            ->method('weekly_team')
+            ->method('weeklyTeam')
             ->will($this->returnValue($expected));
 
-        $this->assertArrayHasKey('organizations', $this->stub->weekly_team($this->options));
+        $this->assertArrayHasKey('organizations', $this->stub->weeklyTeam($this->options));
     }
 
     public function testWeekly_my()
     {
         $expected = json_decode('{"organizations":[]}', true);
         $this->stub->expects($this->any())
-            ->method('weekly_my')
+            ->method('weeklyMy')
             ->will($this->returnValue($expected));
 
-        $this->assertArrayHasKey('organizations', $this->stub->weekly_my($this->options));
+        $this->assertArrayHasKey('organizations', $this->stub->weeklyMy($this->options));
     }
 }
