@@ -1,7 +1,21 @@
 <?php namespace Hubstaff;
 
+/**
+ * Class Activities
+ * @package Hubstaff
+ */
 final class Activities extends AbstractResource
 {
+    /**
+     * @param $auth_token
+     * @param $app_token
+     * @param $starttime
+     * @param $endtime
+     * @param $offset
+     * @param $options
+     * @param $url
+     * @return mixed
+     */
     public function getActivities($auth_token, $app_token, $starttime, $endtime, $offset, $options, $url)
     {
         $fields['Auth-Token'] = $auth_token;
