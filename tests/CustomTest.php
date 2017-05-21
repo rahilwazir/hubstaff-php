@@ -45,19 +45,19 @@ final class CustomTest extends PHPUnit_Framework_TestCase
 
         $optionName = key($options);
         $parameters = [
-            $optionName => '',
-            'Auth-Token'    => 'header',
-            'App-token'     => 'header',
-            'start_date'    => '',
-            'end_date'      => '',
+            $optionName  => '',
+            'Auth-Token' => 'header',
+            'App-token'  => 'header',
+            'start_date' => '',
+            'end_date'   => '',
         ];
 
         $fields = array_merge(
             [
-                'Auth-Token'    => $authToken,
-                'start_date'    => $startDate,
-                'end_date'      => $endDate,
-                'App-token'     => $appToken,
+                'Auth-Token' => $authToken,
+                'start_date' => $startDate,
+                'end_date'   => $endDate,
+                'App-token'  => $appToken,
             ],
             $options
         );
