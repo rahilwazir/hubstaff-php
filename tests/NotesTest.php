@@ -2,45 +2,121 @@
 
 namespace Hubstaff;
 
+use Hubstaff\Decoder\DecodeDataInterface;
+use Hubstaff\Helper\ClientInterface;
+
 class NotesTest extends \PHPUnit_Framework_TestCase
 {
-    private $stub;
-    private $options = [];
+    /**
+     * @var ClientInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $client;
 
-    public function __construct()
+    /**
+     * @var DecodeDataInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $decoder;
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function setUp()
     {
-        parent::__construct();
-        $this->options['users'] = '61188';
-        $this->options['projects'] = '112761';
-        $this->options['organizations'] = '27572';
-
-        $this->stub = $this->getMockBuilder('Hubstaff\Client')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->client = $this->createMock(ClientInterface::class);
+        $this->decoder = $this->createMock(DecodeDataInterface::class);
     }
 
-    public function test_notes()
+
+    /**
+     * @test
+     * @dataProvider provider_valid_options
+     */
+    public function it_should_configure_field_and_parameters(array $options)
     {
-        $starttime = '2016-05-20';
-        $stoptime = '2016-05-23';
+        $authToken = uniqid('authToken', true);
+        $appToken = uniqid('appToken', true);
+        $startTime = uniqid('startTime', true);
+        $endTime = uniqid('endTime', true);
+        $url = uniqid('url', true);
+        $offset = uniqid('offsset', true);
 
-        $expected = json_decode('{"notes":[{"id":716530,"description":"Practice Notes","time_slot":"2016-05-23T22:20:00Z","recorded_at":"2016-06-04T19:08:22Z","user_id":61188,"project_id":112761}]}', true);
-        $this->stub->expects($this->any())
-            ->method('notes')
-            ->will($this->returnValue($expected));
+        $optionName = key($options);
+        $parameters = [
+            $optionName  => '',
+            'Auth-Token' => 'header',
+            'App-token'  => 'header',
+            'start_time' => '',
+            'stop_time'  => '',
+            'offset'     => '',
+        ];
 
-        $this->assertArrayHasKey('notes', $this->stub->notes($starttime, $stoptime, $this->options, 0));
+        $fields = array_merge(
+            [
+                'Auth-Token' => $authToken,
+                'start_time' => $startTime,
+                'stop_time'  => $endTime,
+                'App-token'  => $appToken,
+                'offset'     => $offset,
+            ],
+            $options
+        );
+
+        $this->client->expects(self::once())
+            ->method('send')
+            ->with($fields, $parameters, $url, 0)
+            ->will(self::returnValue([]));
+
+        $this->decoder->expects(self::once())->method('decode');
+
+        $notes = new Notes($this->client, $this->decoder);
+        $notes->getNotes($authToken, $appToken, $startTime, $endTime, $offset, $options, $url);
     }
 
-    public function test_find_note()
+    public function provider_valid_options()
     {
-        $expected = json_decode('{"note":{"id":716530,"description":"Practice Notes","time_slot":"2016-05-23T22:20:00Z","recorded_at":"2016-06-04T19:08:22Z","user_id":61188,"project_id":112761}}', true);
-
-        $this->stub->expects($this->any())
-            ->method('findNote')
-            ->will($this->returnValue($expected));
-
-        $this->assertArrayHasKey('note', $this->stub->findNote(716530));
+        return [
+            [
+                [
+                    'organizations' => uniqid('organization', true),
+                ],
+            ],
+            [
+                [
+                    'projects' => uniqid('projects', true),
+                ],
+            ],
+            [
+                [
+                    'users' => uniqid('users', true),
+                ],
+            ],
+        ];
     }
+
+    /** @test */
+    public function notes()
+    {
+
+        $authToken = uniqid('authToken', true);
+        $appToken = uniqid('appToken', true);
+        $url = uniqid('url', true);
+
+        $fields['Auth-Token'] = $authToken;
+        $fields['App-token'] = $appToken;
+
+        $parameters['Auth-Token'] = 'header';
+        $parameters['App-token'] = 'header';
+
+
+        $this->client->expects(self::once())
+            ->method('send')
+            ->with($fields, $parameters, $url, 0)
+            ->will(self::returnValue([]));
+
+        $this->decoder->expects(self::once())->method('decode');
+        $notes = new Notes($this->client, $this->decoder);
+        $notes->findNote($authToken, $appToken, $url);
+    }
+
 }
 
