@@ -1,41 +1,122 @@
 <?php
 
+use Hubstaff\Decoder\DecodeDataInterface;
+use Hubstaff\Helper\ClientInterface;
+
 class ProjectsTest extends \PHPUnit_Framework_TestCase
 {
-    private $stub;
+    /**
+     * @var ClientInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $client;
 
-    public function __construct()
+    /**
+     * @var DecodeDataInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $decoder;
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function setUp()
     {
-        parent::__construct();
-        $this->stub = $this->getMockBuilder('Hubstaff\Client')->disableOriginalConstructor()->getMock();
+        $this->client = $this->createMock(ClientInterface::class);
+        $this->decoder = $this->createMock(DecodeDataInterface::class);
     }
 
-    public function test_projects()
+    /**
+     * @test
+     */
+    public function it_should_configure_field_and_parameters()
     {
-        $expected = json_decode('{ "projects": [ { "id": 112761, "name": "Build Ruby Gem", "last_activity": "2016-05-24T01:25:21Z", "status": "Active", "description": null }, { "id": 120320, "name": "Hubstaff API tutorial", "last_activity": null, "status": "Active", "description": null } ] }', true);
-        $this->stub->expects($this->any())
-            ->method('projects')
-            ->will($this->returnValue($expected));
+        $authToken = uniqid('authToken', true);
+        $appToken = uniqid('appToken', true);
+        $url = uniqid('url', true);
+        $offset = uniqid('offsset', true);
+        $status = true;
 
-        $this->assertArrayHasKey('projects', $this->stub->projects());
+        $parameters = [
+            'Auth-Token' => 'header',
+            'App-token'  => 'header',
+            'offset'     => '',
+            'status'     => '',
+        ];
+
+        $fields = [
+            'Auth-Token' => $authToken,
+            'App-token'  => $appToken,
+            'offset'     => $offset,
+            'status'     => $status,
+        ];
+
+        $this->client->expects(self::once())
+            ->method('send')
+            ->with($fields, $parameters, $url, 0)
+            ->will(self::returnValue([]));
+
+        $this->decoder->expects(self::once())->method('decode');
+
+        $project = new \Hubstaff\Projects($this->client, $this->decoder);
+        $project->getProjects($authToken, $appToken, $status, $offset, $url);
     }
 
-    public function test_find_project()
+    /** @test */
+    public function find_project()
     {
-        $expected = json_decode('{ "project": { "id": 120320, "name": "Hubstaff API tutorial", "last_activity": null, "status": "Active", "description": null } }', true);
-        $this->stub->expects($this->any())
-            ->method('findProject')
-            ->will($this->returnValue($expected));
+        $authToken = uniqid('authToken', true);
+        $appToken = uniqid('appToken', true);
+        $url = uniqid('url', true);
 
-        $this->assertArrayHasKey('project', $this->stub->findProject(120320));
+        $fields['Auth-Token'] = $authToken;
+        $fields['App-token'] = $appToken;
+
+        $parameters['Auth-Token'] = 'header';
+        $parameters['App-token'] = 'header';
+
+
+        $this->client->expects(self::once())
+            ->method('send')
+            ->with($fields, $parameters, $url, 0)
+            ->will(self::returnValue([]));
+
+        $this->decoder->expects(self::once())->method('decode');
+        $project = new \Hubstaff\Projects($this->client, $this->decoder);
+        $project->findProject($authToken, $appToken, $url);
+
     }
 
-    public function test_find_project_members()
+    /** @test */
+    public function find_project_members()
     {
-        $expected = json_decode('{ "users": [ { "id": 61188, "name": "Raymond Cudjoe", "last_activity": "2016-05-24T01:25:21Z", "email": "rkcudjoe@hookengine.com", "pay_rate": "No rate set" } ] }', true);
-        $this->stub->expects($this->any())
-            ->method('findProjectMembers')
-            ->will($this->returnValue($expected));
-        $this->assertArrayHasKey('users', $this->stub->findProjectMembers(61188));
+
+        $authToken = uniqid('authToken', true);
+        $appToken = uniqid('appToken', true);
+        $url = uniqid('url', true);
+        $offset = uniqid('offsset', true);
+
+
+        $parameters = [
+            'Auth-Token' => 'header',
+            'App-token'  => 'header',
+            'offset'     => '',
+        ];
+
+        $fields = [
+            'Auth-Token' => $authToken,
+            'App-token'  => $appToken,
+            'offset'     => $offset,
+        ];
+
+        $this->client->expects(self::once())
+            ->method('send')
+            ->with($fields, $parameters, $url, 0)
+            ->will(self::returnValue([]));
+
+        $this->decoder->expects(self::once())->method('decode');
+
+        $project = new \Hubstaff\Projects($this->client, $this->decoder);
+        $project->findProjectMembers($authToken, $appToken, $offset, $url);
+
     }
+
 }
