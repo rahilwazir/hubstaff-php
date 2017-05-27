@@ -1,8 +1,9 @@
-<?php namespace Hubstaff;
+<?php
+
+namespace Hubstaff;
 
 final class Notes extends AbstractResource
 {
-
     public function getNotes($auth_token, $app_token, $starttime, $endtime, $offset, $options, $url)
     {
         $fields['Auth-Token'] = $auth_token;
