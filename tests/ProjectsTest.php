@@ -3,6 +3,9 @@
 use Hubstaff\Decoder\DecodeDataInterface;
 use Hubstaff\Helper\ClientInterface;
 
+/**
+ * @cover \Hubstaff\Projects
+ */
 class ProjectsTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -60,7 +63,9 @@ class ProjectsTest extends \PHPUnit_Framework_TestCase
         $project->getProjects($authToken, $appToken, $status, $offset, $url);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function find_project()
     {
         $authToken = uniqid('authToken', true);
@@ -85,10 +90,11 @@ class ProjectsTest extends \PHPUnit_Framework_TestCase
 
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function find_project_members()
     {
-
         $authToken = uniqid('authToken', true);
         $appToken = uniqid('appToken', true);
         $url = uniqid('url', true);
@@ -116,7 +122,5 @@ class ProjectsTest extends \PHPUnit_Framework_TestCase
 
         $project = new \Hubstaff\Projects($this->client, $this->decoder);
         $project->findProjectMembers($authToken, $appToken, $offset, $url);
-
     }
-
 }
