@@ -33,6 +33,7 @@ final class ActivitiesTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      * @dataProvider provider_valid_options
+     * @param array $options
      */
     public function it_should_configure_field_and_parameters(array $options)
     {
@@ -77,26 +78,14 @@ final class ActivitiesTest extends PHPUnit_Framework_TestCase
 
     public function provider_valid_options()
     {
-        return [
-            [
-                [
-                    'organizations' => uniqid('organization', true),
-                ],
-            ],
-            [
-                [
-                    'projects' => uniqid('projects', true),
-                ],
-            ],
-            [
-                [
-                    'users' => uniqid('users', true),
-                ],
-            ],
-        ];
+        yield [['organizations' => uniqid('organization', true)]];
+        yield [['projects'      => uniqid('projects', true)]];
+        yield [['users'         => uniqid('users', true)]];
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function activities()
     {
         $expected = json_encode(['activities' => []]);
