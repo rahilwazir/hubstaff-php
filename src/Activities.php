@@ -1,20 +1,18 @@
-<?php namespace Hubstaff;
+<?php
 
-/**
- * Class Activities
- * @package Hubstaff
- */
+namespace Hubstaff;
+
 final class Activities extends AbstractResource
 {
     /**
-     * @param $auth_token
-     * @param $app_token
-     * @param $starttime
-     * @param $endtime
-     * @param $offset
-     * @param $options
-     * @param $url
-     * @return mixed
+     * @param string $auth_token
+     * @param string $app_token
+     * @param string $starttime
+     * @param string $endtime
+     * @param int $offset
+     * @param array $options
+     * @param string $url
+     * @return array
      */
     public function getActivities($auth_token, $app_token, $starttime, $endtime, $offset, $options, $url)
     {
@@ -49,5 +47,3 @@ final class Activities extends AbstractResource
         return $this->returnDecodedData($url, $fields, $parameters);
     }
 }
-
-

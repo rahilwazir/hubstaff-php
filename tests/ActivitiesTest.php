@@ -36,12 +36,12 @@ final class ActivitiesTest extends PHPUnit_Framework_TestCase
      */
     public function it_should_configure_field_and_parameters(array $options)
     {
-        $authToken = uniqid('authToken', true);
-        $appToken = uniqid('appToken', true);
-        $startTime = uniqid('startTime', true);
-        $endTime = uniqid('endTime', true);
-        $url = uniqid('url', true);
-        $offset = uniqid('offsset', true);
+        $authToken  = uniqid('authToken', true);
+        $appToken   = uniqid('appToken', true);
+        $startTime  = uniqid('startTime', true);
+        $endTime    = uniqid('endTime', true);
+        $url        = uniqid('url', true);
+        $offset     = uniqid('offsset', true);
 
         $optionName = key($options);
         $parameters = [
@@ -103,12 +103,10 @@ final class ActivitiesTest extends PHPUnit_Framework_TestCase
         $startTime = '2016-03-14';
         $stopTime = '2016-03-20';
 
-
-
         $this->client->expects(self::once())->method('send')->will(self::returnValue($expected));
 
-        $this->decoder->expects(self::once())->method('decode')->will(self::returnValue(json_decode($expected, true)));
-
+        $this->decoder->expects(self::once())->method('decode')
+            ->will(self::returnValue(json_decode($expected, true)));
         $this->decoder->expects(self::once())->method('decode');
 
         $activities = new Activities($this->client, $this->decoder);
