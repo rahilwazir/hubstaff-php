@@ -76,23 +76,9 @@ class NotesTest extends \PHPUnit_Framework_TestCase
 
     public function provider_valid_options()
     {
-        return [
-            [
-                [
-                    'organizations' => uniqid('organization', true),
-                ],
-            ],
-            [
-                [
-                    'projects' => uniqid('projects', true),
-                ],
-            ],
-            [
-                [
-                    'users' => uniqid('users', true),
-                ],
-            ],
-        ];
+        yield [['organizations' => uniqid('organization', true)]];
+        yield [['projects' => uniqid('projects', true)]];
+        yield [['users' => uniqid('users', true)]];
     }
 
     /**
