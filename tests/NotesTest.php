@@ -5,6 +5,9 @@ namespace Hubstaff;
 use Hubstaff\Decoder\DecodeDataInterface;
 use Hubstaff\Helper\ClientInterface;
 
+/**
+ * @covers \Hubstaff\Notes
+ */
 class NotesTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -26,12 +29,11 @@ class NotesTest extends \PHPUnit_Framework_TestCase
         $this->decoder = $this->createMock(DecodeDataInterface::class);
     }
 
-
     /**
      * @test
      * @dataProvider provider_valid_options
      */
-    public function it_should_configure_field_and_parameters(array $options)
+    public function it_should_configure_field_and_parameters_to_given_options(array $options)
     {
         $authToken = uniqid('authToken', true);
         $appToken = uniqid('appToken', true);
@@ -93,10 +95,11 @@ class NotesTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function notes()
     {
-
         $authToken = uniqid('authToken', true);
         $appToken = uniqid('appToken', true);
         $url = uniqid('url', true);
@@ -107,7 +110,6 @@ class NotesTest extends \PHPUnit_Framework_TestCase
         $parameters['Auth-Token'] = 'header';
         $parameters['App-token'] = 'header';
 
-
         $this->client->expects(self::once())
             ->method('send')
             ->with($fields, $parameters, $url, 0)
@@ -117,6 +119,4 @@ class NotesTest extends \PHPUnit_Framework_TestCase
         $notes = new Notes($this->client, $this->decoder);
         $notes->findNote($authToken, $appToken, $url);
     }
-
 }
-
