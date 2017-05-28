@@ -2,14 +2,7 @@
 
 use Hubstaff\Decoder\DecodeDataInterface;
 use Hubstaff\helper\ClientInterface;
-/*
- * client
- * decoder
- * url ( baseURI, resourceURI )
- * method
- * parameters
- * query
- */
+
 abstract class AbstractResource
 {
     /**
@@ -50,12 +43,12 @@ abstract class AbstractResource
     /**
      * @param string $method
      * @param string $url
-     * @param array $parameters
+     * @param array $parameters = []
      * @return array
      */
     public function abstractResourceCall($method = 'GET', $url, $parameters = [])
     {
-        return $this->returnDecodedData($method, $url, $parameters, $this->getHeaders());
+        return $this->returnDecodedData($method, $url, $this->getHeaders(), $parameters);
     }
 
     /**
@@ -63,8 +56,8 @@ abstract class AbstractResource
      *
      * @param string $method
      * @param string $url
-     * @param array $parameters
      * @param array $headers
+     * @param array $parameters = []
      *
      * @return array
      */
