@@ -17,6 +17,12 @@ class AuthTest extends PHPUnit_Framework_TestCase
      */
     private $decoder;
 
+    private $appToken = 'string';
+
+    private $email;
+
+    private $password;
+
     /**
      * {@inheritDoc}
      */
@@ -24,25 +30,25 @@ class AuthTest extends PHPUnit_Framework_TestCase
     {
         $this->client = $this->createMock(ClientInterface::class);
         $this->decoder = $this->createMock(DecodeDataInterface::class);
+
+        $this->email = sprintf('%s@%s.com', uniqid('email', true), uniqid('email', true));
+        $this->password = uniqid('authPassword', true);
     }
     /**
      * @test
      */
     public function it_can_login_service()
     {
-        $appToken   = 'string';
-        $email      = sprintf('%s@%s.com', uniqid('email', true), uniqid('email', true));
-        $password   = uniqid('endTime', true);
         $url        = '/v1/auth';
         $method     = 'POST';
 
         $headers = [
-            'App-Token' => $appToken,
+            'App-Token' => $this->appToken,
         ];
 
         $parameters = [
-            'email'    => $email,
-            'password' => $password,
+            'email'    => $this->email,
+            'password' => $this->password,
         ];
 
         $this->client->expects(self::once())
@@ -53,7 +59,7 @@ class AuthTest extends PHPUnit_Framework_TestCase
         $this->decoder->expects(self::once())->method('decode');
 
         $auth = new Auth($this->client, $this->decoder);
-        $auth->auth($email, $password);
+        $auth->auth($this->email, $this->password);
     }
 
 
@@ -63,19 +69,16 @@ class AuthTest extends PHPUnit_Framework_TestCase
 
     public function it_can_expect_auth_success()
     {
-        $appToken   = 'string';
-        $email      = sprintf('%s@%s.com', uniqid('email', true), uniqid('email', true));
-        $password   = uniqid('endTime', true);
         $url        = '/v1/auth';
         $method     = 'POST';
 
         $headers = [
-            'App-Token' => $appToken,
+            'App-Token' => $this->appToken,
         ];
 
         $parameters = [
-            'email'    => $email,
-            'password' => $password,
+            'email'    => $this->email,
+            'password' => $this->password,
         ];
 
         $authToken = uniqid('authToken', true);
@@ -96,7 +99,7 @@ class AuthTest extends PHPUnit_Framework_TestCase
             ->willReturn($expected);
 
         $auth = new Auth($this->client, $this->decoder);
-        $response = $auth->auth($email, $password);
+        $response = $auth->auth($this->email, $this->password);
 
         $this->assertEquals($expected, $response);
     }
@@ -106,19 +109,16 @@ class AuthTest extends PHPUnit_Framework_TestCase
      */
     public function it_can_expect_error()
     {
-        $appToken   = 'string';
-        $email      = sprintf('%s@%s.com', uniqid('email', true), uniqid('email', true));
-        $password   = uniqid('endTime', true);
         $url        = '/v1/auth';
         $method     = 'POST';
 
         $headers = [
-            'App-Token' => $appToken,
+            'App-Token' => $this->appToken,
         ];
 
         $parameters = [
-            'email'    => $email,
-            'password' => $password,
+            'email'    => $this->email,
+            'password' => $this->password,
         ];
 
         $messageError = uniqid('messageError', true);
@@ -134,7 +134,7 @@ class AuthTest extends PHPUnit_Framework_TestCase
             ->willReturn($expected);
 
         $auth = new Auth($this->client, $this->decoder);
-        $response = $auth->auth($email, $password);
+        $response = $auth->auth($this->email, $this->password);
 
         $this->assertEquals($expected, $response);
     }
