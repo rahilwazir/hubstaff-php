@@ -2,26 +2,19 @@
 
 final class Auth extends AbstractResource
 {
-    public function auth($app_token, $email, $password, $url)
+    public function auth($email, $password)
     {
-        $fields['App-token'] = $app_token;
-        $fields['email'] = $email;
-        $fields['password'] = $password;
+        $parameters['email'] = $email;
+        $parameters['password'] = $password;
 
-        $parameters['App-token'] = 'header';
-        $parameters['email'] = '';
-        $parameters['password'] = '';
-
-        $auth_data = $this->returnDecodedData($url, $fields, $parameters, 1);
-
-        if (isset($auth_data->user)) {
-            $data['auth_token'] = $auth_data->user->auth_token;
-        } else {
-            $data['error'] = $auth_data->error;
-        }
-
-        return $data;
+        return $this->returnDecodedData('POST', '/v1/auth', $parameters, $this->getHeaders());
     }
 
+    protected function getHeaders()
+    {
+        return [
+            'App-Token'  => $this->appToken,
+        ];
+    }
 }
 
