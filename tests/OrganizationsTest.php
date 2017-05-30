@@ -2,56 +2,156 @@
 
 namespace Hubstaff;
 
+use Hubstaff\Decoder\DecodeDataInterface;
+use Hubstaff\Helper\ClientInterface;
+
+/**
+ * @covers \Hubstaff\Organizations
+ */
 class OrganizationsTest extends \PHPUnit_Framework_TestCase
 {
-    private $stub;
+    /**
+     * @var ClientInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $client;
 
-    public function __construct()
+    /**
+     * @var DecodeDataInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $decoder;
+
+    /**
+     * @var string
+     */
+    private $appToken = 'string';
+
+    /**
+     * @var string
+     */
+    private $authToken = 'string';
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function setUp()
     {
-        parent::__construct();
-        $this->stub = $this->getMockBuilder('Hubstaff\Client')->disableOriginalConstructor()->getMock();
+        $this->client = $this->createMock(ClientInterface::class);
+        $this->decoder = $this->createMock(DecodeDataInterface::class);
     }
 
-    public function test_organizations()
+    /**
+     * @test
+     */
+    public function it_can_list_organizations()
     {
-        $expected = json_decode('{ "organizations": [ { "id": 27572, "name": "Hook Engine", "last_activity": "2016-05-24T01:25:21Z" } ] }', true);
-        $this->stub->expects($this->any())
-            ->method('organizations')
-            ->will($this->returnValue($expected));
+        $url        = '/v1/organizations';
+        $method     = 'GET';
+        $offset     = random_int(0, PHP_INT_MAX);
 
-        $this->assertArrayHasKey('organizations', $this->stub->organizations());
+        $headers = [
+            'App-Token' => $this->appToken,
+            'Auth-Token'=> $this->authToken
+        ];
+
+        $parameters = [
+            'offset' => $offset,
+        ];
+
+        $this->client->expects(self::once())
+            ->method('send')
+            ->with($method, $url, $headers, $parameters)
+            ->will(self::returnValue([]));
+
+        $this->decoder->expects(self::once())->method('decode');
+
+        $user = new Organizations($this->client, $this->decoder);
+        $user->getOrganizations($offset);
     }
 
-    public function test_find_organization()
+    /**
+     * @test
+     */
+    public function it_can_find_organization()
     {
-        $expected = json_decode('{ "organization": { "id": 27572, "name": "Hook Engine", "last_activity": "2016-05-24T01:25:21Z" } } ', true);
-        $this->stub->expects($this->any())
-            ->method('findOrganization')
-            ->will($this->returnValue($expected));
+        $method     = 'GET';
+        $id         = random_int(0, PHP_INT_MAX);
+        $url        = sprintf('/v1/organizations/%s', $id);
 
-        $this->assertArrayHasKey('organization', $this->stub->findOrganization(27572));
+        $headers = [
+            'App-Token' => $this->appToken,
+            'Auth-Token'=> $this->authToken
+        ];
 
+        $parameters = [];
+
+        $this->client->expects(self::once())
+            ->method('send')
+            ->with($method, $url, $headers, $parameters)
+            ->will(self::returnValue([]));
+
+        $this->decoder->expects(self::once())->method('decode');
+
+        $user = new Organizations($this->client, $this->decoder);
+        $user->findOrganization($id);
     }
 
-    public function test_find_org_projects()
+    /**
+     * @test
+     */
+    public function it_can_find_org_projects()
     {
-        $expected = json_decode('{ "projects": [ { "id": 112761, "name": "Build Ruby Gem", "last_activity": "2016-05-24T01:25:21Z", "status": "Active", "description": null }, { "id": 120320, "name": "Hubstaff API tutorial", "last_activity": null, "status": "Active", "description": null } ] }', true);
+        $method     = 'GET';
+        $id         = random_int(0, PHP_INT_MAX);
+        $offset     = random_int(0, PHP_INT_MAX);
+        $url        = sprintf('/v1/organizations/%s/projects', $id);
 
-        $this->stub->expects($this->any())
-            ->method('findOrgProjects')
-            ->will($this->returnValue($expected));
+        $headers = [
+            'App-Token' => $this->appToken,
+            'Auth-Token'=> $this->authToken
+        ];
 
-        $this->assertArrayHasKey('projects', $this->stub->findOrgProjects(27572));
+        $parameters = [
+            'offset' => $offset
+        ];
+
+        $this->client->expects(self::once())
+            ->method('send')
+            ->with($method, $url, $headers, $parameters)
+            ->will(self::returnValue([]));
+
+        $this->decoder->expects(self::once())->method('decode');
+
+        $user = new Organizations($this->client, $this->decoder);
+        $user->findOrgProjects($id, $offset);
     }
 
-    public function test_find_org_members()
+    /**
+     * @test
+     */
+    public function it_can_find_org_members()
     {
-        $expected = json_decode('{ "users": [ { "id": 61188, "name": "Raymond Cudjoe", "last_activity": "2016-05-24T01:25:21Z", "email": "rkcudjoe@hookengine.com", "pay_rate": "No rate set" } ] }', true);
-        $this->stub->expects($this->any())
-            ->method('findOrgMembers')
-            ->will($this->returnValue($expected));
+        $method     = 'GET';
+        $id         = random_int(0, PHP_INT_MAX);
+        $offset     = random_int(0, PHP_INT_MAX);
+        $url        = sprintf('/v1/organizations/%s/members', $id);
 
-        $this->assertArrayHasKey('users', $this->stub->findOrgMembers(27572));
+        $headers = [
+            'App-Token' => $this->appToken,
+            'Auth-Token'=> $this->authToken
+        ];
+
+        $parameters = [
+            'offset' => $offset
+        ];
+
+        $this->client->expects(self::once())
+            ->method('send')
+            ->with($method, $url, $headers, $parameters)
+            ->will(self::returnValue([]));
+
+        $this->decoder->expects(self::once())->method('decode');
+
+        $user = new Organizations($this->client, $this->decoder);
+        $user->findOrgMembers($id, $offset);
     }
 }
-
