@@ -1,7 +1,10 @@
 <?php
 
+namespace HubstaffTest;
+
 use Hubstaff\Decoder\DecodeDataInterface;
 use Hubstaff\Helper\ClientInterface;
+use Hubstaff\Projects;
 
 /**
  * @cover \Hubstaff\Projects
@@ -19,6 +22,16 @@ class ProjectsTest extends \PHPUnit_Framework_TestCase
     private $decoder;
 
     /**
+     * @var string
+     */
+    private $appToken = 'string';
+
+    /**
+     * @var string
+     */
+    private $authToken = 'string';
+
+    /**
      * {@inheritDoc}
      */
     protected function setUp()
@@ -29,38 +42,42 @@ class ProjectsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @dataProvider list_projects_provider
      */
-    public function it_should_configure_field_and_parameters()
+    public function it_can_list_projects($status, $offset)
     {
-        $authToken = uniqid('authToken', true);
-        $appToken = uniqid('appToken', true);
-        $url = uniqid('url', true);
-        $offset = uniqid('offsset', true);
-        $status = true;
+        $method = 'GET';
+        $url    = '/v1/projects';
+
+        $headers = [
+            'App-Token'  => $this->appToken,
+            'Auth-Token' => $this->authToken,
+        ];
 
         $parameters = [
-            'Auth-Token' => 'header',
-            'App-token'  => 'header',
-            'offset'     => '',
-            'status'     => '',
+            'offset' => $offset,
         ];
 
-        $fields = [
-            'Auth-Token' => $authToken,
-            'App-token'  => $appToken,
-            'offset'     => $offset,
-            'status'     => $status,
-        ];
+        if(!empty($status)){
+            $parameters = array_merge($parameters, ['status' => $status]);
+        }
 
         $this->client->expects(self::once())
             ->method('send')
-            ->with($fields, $parameters, $url, 0)
+            ->with($method, $url, $headers, $parameters)
             ->will(self::returnValue([]));
 
         $this->decoder->expects(self::once())->method('decode');
 
-        $project = new \Hubstaff\Projects($this->client, $this->decoder);
-        $project->getProjects($authToken, $appToken, $status, $offset, $url);
+        $project = new Projects($this->client, $this->decoder);
+        $project->getProjects($status, $offset);
+    }
+
+    public function list_projects_provider()
+    {
+        yield ['', random_int(0, PHP_INT_MAX)];
+        yield ['active', random_int(0, PHP_INT_MAX)];
+        yield ['archived', random_int(0, PHP_INT_MAX)];
     }
 
     /**
@@ -68,26 +85,26 @@ class ProjectsTest extends \PHPUnit_Framework_TestCase
      */
     public function find_project()
     {
-        $authToken = uniqid('authToken', true);
-        $appToken = uniqid('appToken', true);
-        $url = uniqid('url', true);
+        $method = 'GET';
+        $id     = random_int(1, PHP_INT_MAX);
+        $url    = sprintf('/v1/projects/%s', $id);
 
-        $fields['Auth-Token'] = $authToken;
-        $fields['App-token'] = $appToken;
+        $headers = [
+            'App-Token'  => $this->appToken,
+            'Auth-Token' => $this->authToken,
+        ];
 
-        $parameters['Auth-Token'] = 'header';
-        $parameters['App-token'] = 'header';
-
+        $parameters = [];
 
         $this->client->expects(self::once())
             ->method('send')
-            ->with($fields, $parameters, $url, 0)
+            ->with($method, $url, $headers, $parameters)
             ->will(self::returnValue([]));
 
         $this->decoder->expects(self::once())->method('decode');
-        $project = new \Hubstaff\Projects($this->client, $this->decoder);
-        $project->findProject($authToken, $appToken, $url);
 
+        $project = new Projects($this->client, $this->decoder);
+        $project->findProject($id);
     }
 
     /**
@@ -95,32 +112,28 @@ class ProjectsTest extends \PHPUnit_Framework_TestCase
      */
     public function find_project_members()
     {
-        $authToken = uniqid('authToken', true);
-        $appToken = uniqid('appToken', true);
-        $url = uniqid('url', true);
-        $offset = uniqid('offsset', true);
+        $method = 'GET';
+        $id     = random_int(1, PHP_INT_MAX);
+        $url    = sprintf('/v1/projects/%s/members', $id);
+        $offset = random_int(0, PHP_INT_MAX);
 
-
-        $parameters = [
-            'Auth-Token' => 'header',
-            'App-token'  => 'header',
-            'offset'     => '',
+        $headers = [
+            'App-Token'  => $this->appToken,
+            'Auth-Token' => $this->authToken,
         ];
 
-        $fields = [
-            'Auth-Token' => $authToken,
-            'App-token'  => $appToken,
-            'offset'     => $offset,
+        $parameters = [
+            'offset' => $offset,
         ];
 
         $this->client->expects(self::once())
             ->method('send')
-            ->with($fields, $parameters, $url, 0)
+            ->with($method, $url, $headers, $parameters)
             ->will(self::returnValue([]));
 
         $this->decoder->expects(self::once())->method('decode');
 
-        $project = new \Hubstaff\Projects($this->client, $this->decoder);
-        $project->findProjectMembers($authToken, $appToken, $offset, $url);
+        $project = new Projects($this->client, $this->decoder);
+        $project->findProjectMembers($id, $offset);
     }
 }

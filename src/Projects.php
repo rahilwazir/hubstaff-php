@@ -1,39 +1,46 @@
-<?php namespace Hubstaff;
+<?php
+
+namespace Hubstaff;
 
 final class Projects extends AbstractResource
 {
-    public function getProjects($auth_token, $app_token, $status, $offset, $url)
+    /**
+     * @param string $status
+     * @param int $offset
+     * @return array
+     */
+    public function getProjects($status, $offset = 0)
     {
-        $fields['Auth-Token'] = $auth_token;
-        $fields['App-token'] = $app_token;
-        $fields['offset'] = $offset;
-        if ($status)
-            $fields['status'] = $status;
+        $parameters['offset'] = $offset;
 
-        $parameters['Auth-Token'] = 'header';
-        $parameters['App-token'] = 'header';
-        $parameters['offset'] = '';
-        if ($status)
-            $parameters['status'] = '';
+        if (!empty($status)) {
+            $parameters['status'] = $status;
+        }
 
-        return $this->returnDecodedData($url, $fields, $parameters);
+        return $this->abstractResourceCall('GET', '/v1/projects', $parameters);
     }
 
-    public function findProject($auth_token, $app_token, $url)
+    /**
+     * @param int $id
+     * @return array
+     */
+    public function findProject($id)
     {
-        return $this->abstractResourceCall($auth_token, $app_token, $url);
+        $url = sprintf('/v1/projects/%s', $id);
+
+        return $this->abstractResourceCall('GET', $url);
     }
 
-    public function findProjectMembers($auth_token, $app_token, $offset, $url)
+    /**
+     * @param int $id
+     * @param int $offset
+     * @return array
+     */
+    public function findProjectMembers($id, $offset = 0)
     {
-        $fields['Auth-Token'] = $auth_token;
-        $fields['App-token'] = $app_token;
-        $fields['offset'] = $offset;
+        $url = sprintf('/v1/projects/%s/members', $id);
+        $parameters['offset'] = $offset;
 
-        $parameters['Auth-Token'] = 'header';
-        $parameters['App-token'] = 'header';
-        $parameters['offset'] = '';
-
-        return $this->returnDecodedData($url, $fields, $parameters);
+        return $this->abstractResourceCall('GET', $url, $parameters);
     }
 }
