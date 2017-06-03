@@ -5,45 +5,39 @@ namespace Hubstaff;
 final class Activities extends AbstractResource
 {
     /**
-     * @param string $auth_token
-     * @param string $app_token
-     * @param string $starttime
-     * @param string $endtime
+     * @param string $startTime
+     * @param string $stopTime
+     * @param array $parameters
      * @param int $offset
-     * @param array $options
-     * @param string $url
+     *
      * @return array
      */
-    public function getActivities($auth_token, $app_token, $starttime, $endtime, $offset, $options, $url)
+    public function getActivities($startTime, $stopTime, array $parameters = [], $offset = 0)
     {
-        $fields['Auth-Token'] = $auth_token;
-        $fields['App-token'] = $app_token;
-        $fields['start_time'] = $starttime;
-        $fields['stop_time'] = $endtime;
+        $parameters = $this->buildParameters($parameters);
+        $parameters['start_time'] = $startTime;
+        $parameters['stop_time'] = $stopTime;
+        $parameters['offset'] = $offset;
 
-        if (isset($options['organizations'])) {
-            $fields['organizations'] = $options['organizations'];
-            $parameters['organizations'] = '';
+        $url    = '/v1/activities';
+        return $this->abstractResourceCall('GET', $url, $parameters);
+    }
+
+    /**
+     * @param array $parameters
+     *
+     * @return array
+     */
+    private function buildParameters($parameters)
+    {
+        if (!count($parameters)) {
+            return [];
         }
 
-        if (isset($options['projects'])) {
-            $fields['projects'] = $options['projects'];
-            $parameters['projects'] = '';
+        foreach ($parameters as $key => $value) {
+            $parameters[$key] = implode(',', $value);
         }
 
-        if (isset($options['users'])) {
-            $fields['users'] = $options['users'];
-            $parameters['users'] = '';
-        }
-
-        $fields['offset'] = $offset;
-
-        $parameters['Auth-Token'] = 'header';
-        $parameters['App-token'] = 'header';
-        $parameters['start_time'] = '';
-        $parameters['stop_time'] = '';
-        $parameters['offset'] = '';
-
-        return $this->returnDecodedData($url, $fields, $parameters);
+        return $parameters;
     }
 }
