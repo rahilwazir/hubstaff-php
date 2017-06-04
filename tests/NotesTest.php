@@ -21,6 +21,16 @@ class NotesTest extends \PHPUnit_Framework_TestCase
     private $decoder;
 
     /**
+     * @var string
+     */
+    private $appToken = 'string';
+
+    /**
+     * @var string
+     */
+    private $authToken = 'string';
+
+    /**
      * {@inheritDoc}
      */
     protected function setUp()
@@ -31,78 +41,110 @@ class NotesTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @dataProvider provider_valid_options
+     * @dataProvider  data_collection_notes_provider
      */
-    public function it_should_configure_field_and_parameters_to_given_options(array $options)
+    public function it_cant_return_collection_of_notes($startTime, $stopTime, $parameters, $offset)
     {
-        $authToken = uniqid('authToken', true);
-        $appToken = uniqid('appToken', true);
-        $startTime = uniqid('startTime', true);
-        $endTime = uniqid('endTime', true);
-        $url = uniqid('url', true);
-        $offset = uniqid('offsset', true);
+        $method = 'GET';
+        $url    = '/v1/screenshots';
 
-        $optionName = key($options);
-        $parameters = [
-            $optionName  => '',
-            'Auth-Token' => 'header',
-            'App-token'  => 'header',
-            'start_time' => '',
-            'stop_time'  => '',
-            'offset'     => '',
+        $headers = [
+            'App-Token'  => $this->appToken,
+            'Auth-Token' => $this->authToken,
         ];
 
-        $fields = array_merge(
-            [
-                'Auth-Token' => $authToken,
-                'start_time' => $startTime,
-                'stop_time'  => $endTime,
-                'App-token'  => $appToken,
-                'offset'     => $offset,
-            ],
-            $options
-        );
+        $expectedParams = [
+            'start_time'    => $startTime,
+            'stop_time'     => $stopTime,
+            'offset'        => $offset,
+        ];
+
+        if (isset($parameters['organizations'])) {
+            $expectedParams['organizations'] = implode(',', $parameters['organizations']);
+        }
+        if (isset($parameters['projects'])) {
+            $expectedParams['projects'] = implode(',', $parameters['projects']);
+        }
+        if (isset($parameters['users'])) {
+            $expectedParams['users'] = implode(',', $parameters['users']);
+        }
 
         $this->client->expects(self::once())
             ->method('send')
-            ->with($fields, $parameters, $url, 0)
+            ->with($method, $url, $headers, $expectedParams)
             ->will(self::returnValue([]));
 
         $this->decoder->expects(self::once())->method('decode');
 
+        $this->decoder->expects(self::once())->method('decode');
         $notes = new Notes($this->client, $this->decoder);
-        $notes->getNotes($authToken, $appToken, $startTime, $endTime, $offset, $options, $url);
+        $notes->getNotes($startTime, $stopTime, $parameters, $offset);
     }
 
-    public function provider_valid_options()
+    public function data_collection_notes_provider()
     {
-        yield [['organizations' => uniqid('organization', true)]];
-        yield [['projects' => uniqid('projects', true)]];
-        yield [['users' => uniqid('users', true)]];
+        yield [date('H:i:s'), date('H:i:s'), ['organizations' => []], random_int(1, PHP_INT_MAX)];
+        yield [date('H:i:s'), date('H:i:s'), ['users' => []], random_int(1, PHP_INT_MAX)];
+        yield [date('H:i:s'), date('H:i:s'), ['projects' => []], random_int(1, PHP_INT_MAX)];
+
+        $organizations = [
+            random_int(1, PHP_INT_MAX),
+            random_int(1, PHP_INT_MAX),
+            random_int(1, PHP_INT_MAX),
+        ];
+        yield [date('H:i:s'), date('H:i:s'), ['organizations' => $organizations], random_int(1, PHP_INT_MAX)];
+
+        $projects = [
+            random_int(1, PHP_INT_MAX),
+            random_int(1, PHP_INT_MAX),
+            random_int(1, PHP_INT_MAX),
+        ];
+        yield [date('H:i:s'), date('H:i:s'), ['projects' => $projects], random_int(1, PHP_INT_MAX)];
+
+        $users = [
+            random_int(1, PHP_INT_MAX),
+            random_int(1, PHP_INT_MAX),
+            random_int(1, PHP_INT_MAX),
+        ];
+        yield [date('H:i:s'), date('H:i:s'), ['users' => $users], random_int(1, PHP_INT_MAX)];
+
+
+        yield [
+            date('H:i:s'), date('H:i:s'),
+            [
+                'projects'      => $projects,
+                'organizations' => $organizations,
+                'users'         => $users,
+            ],
+            random_int(1, PHP_INT_MAX),
+        ];
     }
 
     /**
      * @test
      */
-    public function notes()
+    public function it_can_return_the_note_with_given_id()
     {
-        $authToken = uniqid('authToken', true);
-        $appToken = uniqid('appToken', true);
-        $url = uniqid('url', true);
+        $method = 'GET';
+        $id = random_int(1, PHP_INT_MAX);
+        $url    = strtr('/v1/notes/{id}', '{id}', $id);
 
-        $fields['Auth-Token'] = $authToken;
-        $fields['App-token'] = $appToken;
+        $headers = [
+            'App-Token'  => $this->appToken,
+            'Auth-Token' => $this->authToken,
+        ];
 
-        $parameters['Auth-Token'] = 'header';
-        $parameters['App-token'] = 'header';
+        $expectedParams = [];
 
         $this->client->expects(self::once())
             ->method('send')
-            ->with($fields, $parameters, $url, 0)
+            ->with($method, $url, $headers, $expectedParams)
             ->will(self::returnValue([]));
 
         $this->decoder->expects(self::once())->method('decode');
+
+        $this->decoder->expects(self::once())->method('decode');
         $notes = new Notes($this->client, $this->decoder);
-        $notes->findNote($authToken, $appToken, $url);
+        $notes->findNote($id);
     }
 }
