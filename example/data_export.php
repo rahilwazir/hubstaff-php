@@ -7,7 +7,7 @@
 	$email = "rkcudjoe@hookengine.com";
 	$password = "hookdev001";
 
-	$hubstaff = new hubstaff\Client($app_token);
+	$hubstaff = new Hubstaff\HubStaffClient($app_token);
 
 	$hubstaff->auth($email,$password);
 
