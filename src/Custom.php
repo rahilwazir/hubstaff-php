@@ -1,49 +1,46 @@
-<?php namespace Hubstaff;
+<?php
+
+namespace Hubstaff;
 
 final class Custom extends AbstractResource
 {
-    public function customReport($auth_token, $app_token, $start_date, $end_date, $options, $url)
+    /**
+     * @param string $startDate
+     * @param string $endDate
+     * @param string $url
+     * @param array $parameters
+     *
+     * @return array
+     */
+    public function customReport($startDate, $endDate, $url, array $parameters = [])
     {
-        $fields['Auth-Token'] = $auth_token;
-        $fields['App-token'] = $app_token;
-        $fields['start_date'] = $start_date;
-        $fields['end_date'] = $end_date;
+        $parameters = $this->buildParameters($parameters);
+        $parameters['start_date'] = $startDate;
+        $parameters['end_date'] = $endDate;
 
-        if (isset($options['organizations'])) {
-            $fields['organizations'] = $options['organizations'];
-            $parameters['organizations'] = '';
-        }
-        if (isset($options['projects'])) {
-            $fields['projects'] = $options['projects'];
-            $parameters['projects'] = '';
-        }
-        if (isset($options['users'])) {
-            $fields['users'] = $options['users'];
-            $parameters['users'] = '';
-        }
-        if (isset($options['show_tasks'])) {
-            $fields['show_tasks'] = $options['show_tasks'];
-            $parameters['show_tasks'] = '';
-        }
-        if (isset($options['show_notes'])) {
-            $fields['show_notes'] = $options['show_notes'];
-            $parameters['show_notes'] = '';
-        }
-        if (isset($options['show_activity'])) {
-            $fields['show_activity'] = $options['show_activity'];
-            $parameters['show_activity'] = '';
-        }
-        if (isset($options['include_archived'])) {
-            $fields['include_archived'] = $options['include_archived'];
-            $parameters['include_archived'] = '';
+        return $this->abstractResourceCall('GET', $url, $parameters);
+    }
+
+    /**
+     * @param array $parameters
+     *
+     * @return array
+     */
+    private function buildParameters($parameters)
+    {
+        if (!count($parameters)) {
+            return [];
         }
 
+        foreach ($parameters as $key => $value) {
+            if (is_array($value)) {
+                $parameters[ $key ] = implode(',', $value);
+                continue;
+            }
 
-        $parameters['Auth-Token'] = 'header';
-        $parameters['App-token'] = 'header';
-        $parameters['start_date'] = '';
-        $parameters['end_date'] = '';
+            $parameters[ $key ] = $value;
+        }
 
-        return $this->returnDecodedData($url, $fields, $parameters);
+        return $parameters;
     }
 }

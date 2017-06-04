@@ -23,6 +23,16 @@ final class CustomTest extends PHPUnit_Framework_TestCase
     private $decoder;
 
     /**
+     * @var string
+     */
+    private $appToken = 'string';
+
+    /**
+     * @var string
+     */
+    private $authToken = 'string';
+
+    /**
      * {@inheritDoc}
      */
     protected function setUp()
@@ -33,109 +43,130 @@ final class CustomTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @dataProvider provider_valid_options
+     * @dataProvider data_collection_custom_provider
      */
-    public function it_should_configure_field_and_parameters(array $options)
+    public function it_can_return_a_custom_report_grouped_by_date_for_a_given_date_range($url, $startDate, $endDate, $parameters)
     {
-        $authToken = uniqid('authToken', true);
-        $appToken = uniqid('appToken', true);
-        $startDate = uniqid('startDate', true);
-        $endDate = uniqid('endToken', true);
-        $url = uniqid('url', true);
+        $method = 'GET';
 
-        $optionName = key($options);
-        $parameters = [
-            $optionName  => '',
-            'Auth-Token' => 'header',
-            'App-token'  => 'header',
-            'start_date' => '',
-            'end_date'   => '',
+        $headers = [
+            'App-Token'  => $this->appToken,
+            'Auth-Token' => $this->authToken,
         ];
 
-        $fields = array_merge(
-            [
-                'Auth-Token' => $authToken,
-                'start_date' => $startDate,
-                'end_date'   => $endDate,
-                'App-token'  => $appToken,
-            ],
-            $options
-        );
+        $expectedParams = $this->buildExpectedParameters($startDate, $endDate, $parameters);
 
         $this->client->expects(self::once())
             ->method('send')
-            ->with($fields, $parameters, $url, 0)
+            ->with($method, $url, $headers, $expectedParams)
             ->will(self::returnValue([]));
 
         $this->decoder->expects(self::once())->method('decode');
 
         $custom = new Custom($this->client, $this->decoder);
-        $custom->customReport($authToken, $appToken, $startDate, $endDate, $options, $url);
+        $custom->customReport($startDate, $endDate, $url, $parameters);
     }
 
-    public function provider_valid_options()
+    public function data_collection_custom_provider()
     {
-        return [
-            [
+        foreach ($this->listOfUrl() as $url) {
+            $startDate = date('Y-m-d');
+            $endDate = date('Y-m-d');
+            $users = [
+                random_int(1, PHP_INT_MAX),
+                random_int(1, PHP_INT_MAX),
+                random_int(1, PHP_INT_MAX),
+            ];
+            $organizations = [
+                random_int(1, PHP_INT_MAX),
+                random_int(1, PHP_INT_MAX),
+                random_int(1, PHP_INT_MAX),
+            ];
+            $projects = [
+                random_int(1, PHP_INT_MAX),
+                random_int(1, PHP_INT_MAX),
+                random_int(1, PHP_INT_MAX),
+            ];
+            $showTasks          = random_int(0, 1);
+            $showNotes          = random_int(0, 1);
+            $showActivity       = random_int(0, 1);
+            $includeArchived    = random_int(0, 1);
+
+            yield [$url, $startDate, $endDate, []];
+            yield [$url, $startDate, $endDate, ['show_tasks' => $showTasks]];
+            yield [$url, $startDate, $endDate, ['show_notes' => $showNotes]];
+            yield [$url, $startDate, $endDate, ['show_activity' => $showActivity]];
+            yield [$url, $startDate, $endDate, ['include_archived' => $includeArchived]];
+            yield [$url, $startDate, $endDate, ['organizations' => []]];
+            yield [$url, $startDate, $endDate, ['users' => []]];
+            yield [$url, $startDate, $endDate, ['projects' => []]];
+            yield [$url, $startDate, $endDate, ['organizations' => $organizations]];
+            yield [$url, $startDate, $endDate, ['projects' => $projects]];
+            yield [$url, $startDate, $endDate, ['users' => $users]];
+            yield [
+                $url,
+                $startDate,
+                $endDate,
                 [
-                    'organizations' => uniqid('organization', true),
+                    'show_tasks'       => $showTasks,
+                    'show_notes'       => $showNotes,
+                    'show_activity'    => $showActivity,
+                    'include_archived' => $includeArchived,
+                    'projects'         => $projects,
+                    'organizations'    => $organizations,
+                    'users'            => $users,
                 ],
-            ],
-            [
-                [
-                    'projects' => uniqid('projects', true),
-                ],
-            ],
-            [
-                [
-                    'users' => uniqid('users', true),
-                ],
-            ],
-            [
-                [
-                    'show_tasks' => uniqid('show_tasks', true),
-                ],
-            ],
-            [
-                [
-                    'show_notes' => uniqid('show_notes', true),
-                ],
-            ],
-            [
-                [
-                    'show_activity' => uniqid('show_activity', true),
-                ],
-            ],
-            [
-                [
-                    'include_archived' => uniqid('include_archived', true),
-                ],
-            ],
-        ];
+            ];
+        }
+    }
+
+    private function listOfUrl()
+    {
+        yield '/v1/custom/by_date/team';
+        yield '/v1/custom/by_date/my';
+        yield '/v1/custom/by_member/team';
+        yield '/v1/custom/by_member/my';
+        yield '/v1/custom/by_project/team';
+        yield '/v1/custom/by_project/my';
     }
 
     /**
-     * @todo move it to abstract resource
+     * @param $startDate
+     * @param $endDate
+     * @param $parameters
+     *
+     * @return array
+     * @internal array $expectedParams
      */
-    public function test_custom_date_team()
+    private function buildExpectedParameters($startDate, $endDate, $parameters)
     {
-        $expected = '{"organizations":[{"id":27572,"name":"Hook Engine","duration":7874,"dates":[{"date":"2016-05-23","duration":7874,"users":[{"id":61188,"name":"Raymond Cudjoe","duration":7874,"projects":[{"id":112761,"name":"Build Ruby Gem","duration":7874}]}]}]}]}';
+        $expectedParams = [
+            'start_date' => $startDate,
+            'end_date'   => $endDate,
+        ];
 
-        $this->client->expects(self::once())->method('send')->will(self::returnValue($expected));
+        if (isset($parameters['organizations'])) {
+            $expectedParams['organizations'] = implode(',', $parameters['organizations']);
+        }
+        if (isset($parameters['projects'])) {
+            $expectedParams['projects'] = implode(',', $parameters['projects']);
+        }
+        if (isset($parameters['users'])) {
+            $expectedParams['users'] = implode(',', $parameters['users']);
+        }
+        if (isset($parameters['show_tasks'])) {
+            $expectedParams['show_tasks'] = $parameters['show_tasks'];
+        }
+        if (isset($parameters['show_notes'])) {
+            $expectedParams['show_notes'] = $parameters['show_notes'];
+        }
+        if (isset($parameters['show_activity'])) {
+            $expectedParams['show_activity'] = $parameters['show_activity'];
+        }
+        if (isset($parameters['include_archived'])) {
+            $expectedParams['include_archived'] = $parameters['include_archived'];
+        }
 
-        $this->decoder->expects(self::once())->method('decode')->will(self::returnValue(json_decode($expected, true)));
-
-        $custom = new Custom($this->client, $this->decoder);
-
-        $actual = $custom->customReport(
-            'auth_token',
-            'app_token',
-            'start_date',
-            'end_date',
-            'options',
-            'url'
-        );
-
-        self::assertEquals(json_decode($expected, true), $actual);
+        return $expectedParams;
     }
 }
