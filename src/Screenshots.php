@@ -1,36 +1,44 @@
-<?php namespace Hubstaff;
+<?php
 
+namespace Hubstaff;
 
 final class Screenshots extends AbstractResource
 {
-    public function getScreenshots($auth_token, $app_token, $starttime, $endtime, $offset, $options, $url)
+    /**
+     * @param string $startTime
+     * @param string $stopTime
+     * @param array $parameters
+     * @param int $offset
+     *
+     * @return array
+     */
+    public function getScreenshots($startTime, $stopTime, array $parameters = [], $offset = 0)
     {
-        $fields['Auth-Token'] = $auth_token;
-        $fields['App-token'] = $app_token;
-        $fields['start_time'] = $starttime;
-        $fields['stop_time'] = $endtime;
+        $parameters = $this->buildParameters($parameters);
+        $parameters['start_time'] = $startTime;
+        $parameters['stop_time'] = $stopTime;
+        $parameters['offset'] = $offset;
 
-        if (isset($options['organizations'])) {
-            $fields['organizations'] = $options['organizations'];
-            $parameters['organizations'] = '';
+        $url    = '/v1/screenshots';
+
+        return $this->abstractResourceCall('GET', $url, $parameters);
+    }
+
+    /**
+     * @param array $parameters
+     *
+     * @return array
+     */
+    private function buildParameters($parameters)
+    {
+        if (!count($parameters)) {
+            return [];
         }
-        if (isset($options['projects'])) {
-            $fields['projects'] = $options['projects'];
-            $parameters['projects'] = '';
-        }
-        if (isset($options['users'])) {
-            $fields['users'] = $options['users'];
-            $parameters['users'] = '';
+
+        foreach ($parameters as $key => $value) {
+            $parameters[$key] = implode(',', $value);
         }
 
-        $fields['offset'] = $offset;
-
-        $parameters['Auth-Token'] = 'header';
-        $parameters['App-token'] = 'header';
-        $parameters['start_time'] = '';
-        $parameters['stop_time'] = '';
-        $parameters['offset'] = '';
-
-        return $this->returnDecodedData($url, $fields, $parameters);
+        return $parameters;
     }
 }

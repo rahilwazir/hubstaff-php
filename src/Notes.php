@@ -1,42 +1,56 @@
-<?php namespace Hubstaff;
+<?php
+
+namespace Hubstaff;
 
 final class Notes extends AbstractResource
 {
-
-    public function getNotes($auth_token, $app_token, $starttime, $endtime, $offset, $options, $url)
+    /**
+     * @param string $startTime
+     * @param string $stopTime
+     * @param array $parameters
+     * @param int $offset
+     *
+     * @return array
+     */
+    public function getNotes($startTime, $stopTime, array $parameters = [], $offset = 0)
     {
-        $fields['Auth-Token'] = $auth_token;
-        $fields['App-token'] = $app_token;
-        $fields['start_time'] = $starttime;
-        $fields['stop_time'] = $endtime;
+        $parameters = $this->buildParameters($parameters);
+        $parameters['start_time'] = $startTime;
+        $parameters['stop_time'] = $stopTime;
+        $parameters['offset'] = $offset;
 
-        if (isset($options['organizations'])) {
-            $fields['organizations'] = $options['organizations'];
-            $parameters['organizations'] = '';
-        }
-        if (isset($options['projects'])) {
-            $fields['projects'] = $options['projects'];
-            $parameters['projects'] = '';
-        }
-        if (isset($options['users'])) {
-            $fields['users'] = $options['users'];
-            $parameters['users'] = '';
-        }
+        $url = '/v1/screenshots';
 
-        $fields['offset'] = $offset;
-
-
-        $parameters['Auth-Token'] = 'header';
-        $parameters['App-token'] = 'header';
-        $parameters['start_time'] = '';
-        $parameters['stop_time'] = '';
-        $parameters['offset'] = '';
-
-        return $this->returnDecodedData($url, $fields, $parameters);
+        return $this->abstractResourceCall('GET', $url, $parameters);
     }
 
-    public function findNote($auth_token, $app_token, $url)
+    /**
+     * @param int $id
+     *
+     * @return array
+     */
+    public function findNote($id)
     {
-        return $this->abstractResourceCall($auth_token, $app_token, $url);
+        $url    = strtr('/v1/notes/{id}', '{id}', $id);
+
+        return $this->abstractResourceCall('GET', $url);
+    }
+
+    /**
+     * @param array $parameters
+     *
+     * @return array
+     */
+    private function buildParameters($parameters)
+    {
+        if (!count($parameters)) {
+            return [];
+        }
+
+        foreach ($parameters as $key => $value) {
+            $parameters[$key] = implode(',', $value);
+        }
+
+        return $parameters;
     }
 }

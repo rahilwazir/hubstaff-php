@@ -1,54 +1,55 @@
-<?php namespace Hubstaff;
+<?php
+
+namespace Hubstaff;
 
 final class Users extends AbstractResource
 {
-
-    public function getUsers($auth_token, $app_token, $organization_memberships, $project_memberships, $offset, $url)
+    /**
+     * @param bool $organizationMemberships
+     * @param bool $projectMemberships
+     * @param int $offset
+     * @return array
+     */
+    public function getUsers($organizationMemberships = false, $projectMemberships = false, $offset = 0)
     {
-        $fields['Auth-Token'] = $auth_token;
-        $fields['App-token'] = $app_token;
-        $fields['organization_memberships'] = (int)$organization_memberships;
-        $fields['project_memberships'] = (int)$project_memberships;
-        $fields['offset'] = $offset;
+        $parameters['organization_memberships'] = $organizationMemberships;
+        $parameters['project_memberships'] = $projectMemberships;
+        $parameters['offset'] = $offset;
 
-        $parameters['Auth-Token'] = 'header';
-        $parameters['App-token'] = 'header';
-        $parameters['organization_memberships'] = '';
-        $parameters['project_memberships'] = '';
-        $parameters['offset'] = '';
-
-        return $this->returnDecodedData($url, $fields, $parameters);
+        return $this->abstractResourceCall('GET', '/v1/users', $parameters);
     }
 
-    public function findUser($auth_token, $app_token, $url)
+    /**
+     * @param int $id
+     * @return array
+     */
+    public function findUser($id)
     {
-        return $this->abstractResourceCall($auth_token, $app_token, $url);
+        $url = sprintf('/v1/users/%d', $id);
+        return $this->abstractResourceCall('GET', $url);
     }
 
-    public function findUserOrgs($auth_token, $app_token, $offset, $url)
+    /**
+     * @param int $id
+     * @param int $offset
+     * @return array
+     */
+    public function findUserOrgs($id, $offset = 0)
     {
-        $fields['Auth-Token'] = $auth_token;
-        $fields['App-token'] = $app_token;
-        $fields['offset'] = $offset;
-
-        $parameters['Auth-Token'] = 'header';
-        $parameters['App-token'] = 'header';
-        $parameters['offset'] = 'header';
-
-        return $this->returnDecodedData($url, $fields, $parameters);
+        $parameters['offset'] = $offset;
+        $url = sprintf('/v1/users/%d/organizations', $id);
+        return $this->abstractResourceCall('GET', $url, $parameters);
     }
 
-    public function findUserProjects($auth_token, $app_token, $offset, $url)
+    /**
+     * @param int $id
+     * @param int $offset
+     * @return array
+     */
+    public function findUserProjects($id, $offset = 0)
     {
-        $fields['Auth-Token'] = $auth_token;
-        $fields['App-token'] = $app_token;
-        $fields['offset'] = $offset;
-
-        $parameters['Auth-Token'] = 'header';
-        $parameters['App-token'] = 'header';
-        $parameters['offset'] = 'header';
-
-        return $this->returnDecodedData($url, $fields, $parameters);
+        $parameters['offset'] = $offset;
+        $url = sprintf('/v1/users/%d/projects', $id);
+        return $this->abstractResourceCall('GET', $url, $parameters);
     }
 }
-

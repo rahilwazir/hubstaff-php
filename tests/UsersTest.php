@@ -2,55 +2,182 @@
 
 namespace Hubstaff;
 
+use Hubstaff\Decoder\DecodeDataInterface;
+use Hubstaff\Helper\ClientInterface;
+
+/**
+ * @covers \Hubstaff\Users
+ */
 class UsersTest extends \PHPUnit_Framework_TestCase
 {
-    private $stub;
+    /**
+     * @var ClientInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $client;
 
-    public function __construct()
+    /**
+     * @var DecodeDataInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $decoder;
+
+    private $appToken = 'string';
+
+    private $authToken = 'string';
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function setUp()
     {
-        parent::__construct();
-        $this->stub = $this->getMockBuilder('Hubstaff\Client')->disableOriginalConstructor()->getMock();
+        $this->client = $this->createMock(ClientInterface::class);
+        $this->decoder = $this->createMock(DecodeDataInterface::class);
     }
 
-    public function test_users()
+    /**
+     * @test
+     * @dataProvider data_parameters_users_provider
+     */
+    public function it_can_list_users($organizationMemberships, $projectMemberships, $offset)
     {
-        $expected = json_decode('{"users": [ {"id": 61188, "name": "Raymond Cudjoe","last_activity": "2016-05-24T01:25:21Z","email": "rkcudjoe@hookengine.com"}]}', true);
-        $this->stub->expects($this->any())
-            ->method('users')
-            ->will($this->returnValue($expected));
+        $url        = '/v1/users';
+        $method     = 'GET';
 
-        $this->assertArrayHasKey('users', $this->stub->users());
+        $headers = [
+            'App-Token' => $this->appToken,
+            'Auth-Token'=> $this->authToken
+        ];
+
+        $parameters = [
+            'organization_memberships' => $organizationMemberships,
+            'project_memberships'      => $projectMemberships,
+            'offset'                   => $offset,
+        ];
+
+        $this->client->expects(self::once())
+            ->method('send')
+            ->with($method, $url, $headers, $parameters)
+            ->will(self::returnValue([]));
+
+        $this->decoder->expects(self::once())->method('decode');
+
+        $user = new Users($this->client, $this->decoder);
+        $user->getUsers($organizationMemberships, $projectMemberships, $offset);
     }
 
-    public function test_find_user()
+    public function data_parameters_users_provider()
     {
-        $expected = json_decode('{"user": {"id": 61188,"name": "Raymond Cudjoe","last_activity": "2016-05-24T01:25:21Z","email": "rkcudjoe@hookengine.com"}}', true);
-        $this->stub->expects($this->any())
-            ->method('find_user')
-            ->will($this->returnValue($expected));
-
-        $this->assertArrayHasKey('user', $this->stub->find_user(61188));
-
+        yield ['true', 'false', 1];
+        yield ['true', 'true', 3];
+        yield ['false', 'true', 4];
+        yield ['false', 'false', 7];
     }
 
-    public function test_find_user_projects()
+    /**
+     * @test
+     */
+    public function it_cant_find_users_by_id()
     {
-        $expected = json_decode('{ "projects": [ { "id": 112761, "name": "Build Ruby Gem", "last_activity": "2016-05-24T01:25:21Z", "status": "Active", "description": null }, { "id": 120320, "name": "Hubstaff API tutorial", "last_activity": null, "status": "Active", "description": null } ] }', true);
-        $this->stub->expects($this->any())
-            ->method('findUserProjects')
-            ->will($this->returnValue($expected));
+        $id         = random_int(1, 20);
+        $url        = sprintf('/v1/users/%d', $id);
+        $method     = 'GET';
 
-        $this->assertArrayHasKey('projects', $this->stub->findUserProjects(61188));
+        $headers = [
+            'App-Token' => $this->appToken,
+            'Auth-Token'=> $this->authToken
+        ];
+
+        $parameters = [];
+
+        $this->client->expects(self::once())
+            ->method('send')
+            ->with($method, $url, $headers, $parameters)
+            ->will(self::returnValue([]));
+
+        $this->decoder->expects(self::once())->method('decode');
+
+        $user = new Users($this->client, $this->decoder);
+        $user->findUser($id);
     }
 
-    public function testFind_user_orgs()
+    /**
+     * @test
+     */
+    public function it_can_find_user_orgs()
     {
-        $expected = json_decode('{ "organizations": [ { "id": 27572, "name": "Hook Engine", "last_activity": "2016-05-24T01:25:21Z" } ] } ', true);
-        $this->stub->expects($this->any())
-            ->method('findUserOrgs')
-            ->will($this->returnValue($expected));
+        $id         = random_int(1, 20);
+        $url        = sprintf('/v1/users/%d/organizations', $id);
+        $method     = 'GET';
+        $offset     = random_int(1, 10);
 
-        $this->assertArrayHasKey('organizations', $this->stub->findUserOrgs(61188));
+        $headers = [
+            'App-Token' => $this->appToken,
+            'Auth-Token'=> $this->authToken
+        ];
+
+        $parameters = [
+            'offset' => $offset
+        ];
+
+        $expected = [
+            'id'            => 0,
+            'name'          => '',
+            'last_activity' => '',
+        ];
+
+        $this->client->expects(self::once())
+            ->method('send')
+            ->with($method, $url, $headers, $parameters)
+            ->will(self::returnValue([]));
+
+        $this->decoder->expects(self::once())->method('decode')
+            ->will(self::returnValue($expected));
+
+        $user = new Users($this->client, $this->decoder);
+        $response = $user->findUserOrgs($id, $offset);
+
+        self::assertEquals($expected, $response);
+        self::assertEquals(array_keys($expected), array_keys($response));
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_find_user_projects()
+    {
+        $id         = random_int(1, 20);
+        $url        = sprintf('/v1/users/%d/projects', $id);
+        $method     = 'GET';
+        $offset     = random_int(1, 10);
+
+        $headers = [
+            'App-Token' => $this->appToken,
+            'Auth-Token'=> $this->authToken
+        ];
+
+        $parameters = [
+            'offset' => $offset
+        ];
+
+        $expected = [
+            'id'            => 0,
+            'name'          => '',
+            'last_activity' => '',
+            'status'        => '',
+        ];
+
+        $this->client->expects(self::once())
+            ->method('send')
+            ->with($method, $url, $headers, $parameters)
+            ->will(self::returnValue([]));
+
+        $this->decoder->expects(self::once())->method('decode')
+            ->will(self::returnValue($expected));
+
+        $user = new Users($this->client, $this->decoder);
+        $response = $user->findUserProjects($id, $offset);
+
+        self::assertEquals($expected, $response);
+        self::assertEquals(array_keys($expected), array_keys($response));
     }
 }
 

@@ -1,50 +1,54 @@
-<?php namespace Hubstaff;
+<?php
 
+namespace Hubstaff;
 
 final class Organizations extends AbstractResource
 {
-    public function getOrganizations($auth_token, $app_token, $offset, $url)
+    /**
+     * @param int $offset
+     * @return array
+     */
+    public function getOrganizations($offset = 0)
     {
-        $fields['Auth-Token'] = $auth_token;
-        $fields['App-token'] = $app_token;
-        $fields['offset'] = $offset;
+        $parameters['offset'] = $offset;
 
-        $parameters['Auth-Token'] = 'header';
-        $parameters['App-token'] = 'header';
-        $parameters['offset'] = '';
-
-        return $this->returnDecodedData($url, $fields, $parameters);
+        return $this->abstractResourceCall('GET', '/v1/organizations', $parameters);
     }
 
-    public function findOrganization($auth_token, $app_token, $url)
+    /**
+     * @param int $id
+     * @return array
+     */
+    public function findOrganization($id)
     {
-        return $this->abstractResourceCall($auth_token, $app_token, $url);
+        $url = sprintf('/v1/organizations/%s', $id);
+
+        return $this->abstractResourceCall('GET', $url);
     }
 
-    // @todo move logic to abstractResourceCall and merge things
-    public function findOrgProjects($auth_token, $app_token, $offset, $url)
+    /**
+     * @param int $id
+     * @param int $offset
+     * @return array
+     */
+    public function findOrgProjects($id, $offset = 0)
     {
-        $fields['Auth-Token'] = $auth_token;
-        $fields['App-token'] = $app_token;
-        $fields['offset'] = $offset;
+        $parameters['offset'] = $offset;
+        $url        = sprintf('/v1/organizations/%s/projects', $id);
 
-        $parameters['Auth-Token'] = 'header';
-        $parameters['App-token'] = 'header';
-        $parameters['offset'] = '';
-
-        return $this->returnDecodedData($url, $fields, $parameters);
+        return $this->abstractResourceCall('GET', $url, $parameters);
     }
 
-    public function findOrgMembers($auth_token, $app_token, $offset, $url)
+    /**
+     * @param int $id
+     * @param int $offset
+     * @return array
+     */
+    public function findOrgMembers($id, $offset = 0)
     {
-        $fields['Auth-Token'] = $auth_token;
-        $fields['App-token'] = $app_token;
-        $fields['offset'] = $offset;
+        $parameters['offset'] = $offset;
+        $url        = sprintf('/v1/organizations/%s/members', $id);
 
-        $parameters['Auth-Token'] = 'header';
-        $parameters['App-token'] = 'header';
-        $parameters['offset'] = '';
-
-        return $this->returnDecodedData($url, $fields, $parameters);
+        return $this->abstractResourceCall('GET', $url, $parameters);
     }
 }

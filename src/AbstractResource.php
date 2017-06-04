@@ -15,37 +15,65 @@ abstract class AbstractResource
      */
     protected $decoder;
 
+    /**
+     * @var string
+     */
+    protected $appToken = 'string';
+
+    /**
+     * @var string
+     */
+    protected $authToken = 'string';
+
+    /**
+     * @var string
+     */
+    protected $url = 'string';
+
+    /**
+     * @param ClientInterface $client
+     * @param DecodeDataInterface $decoder
+     */
     public function __construct(ClientInterface $client, DecodeDataInterface $decoder)
     {
-        $this->client  = $client;
+        $this->client = $client;
         $this->decoder = $decoder;
     }
 
-    public function abstractResourceCall($authToken, $applicationToken, $url)
+    /**
+     * @param string $method
+     * @param string $url
+     * @param array $parameters = []
+     * @return array
+     */
+    public function abstractResourceCall($method = 'GET', $url, $parameters = [])
     {
-        $fields               = [];
-        $fields['Auth-Token'] = $authToken;
-        $fields['App-token']  = $applicationToken;
-
-        $parameters               = [];
-        $parameters['Auth-Token'] = 'header';
-        $parameters['App-token']  = 'header';
-
-        return $this->returnDecodedData($url, $fields, $parameters);
+        return $this->returnDecodedData($method, $url, $this->getHeaders(), $parameters);
     }
 
     /**
      * Return the response result decoded
      *
-     * @param string   $url
-     * @param string[] $fields
-     * @param string[] $parameters
-     * @param int      $type
+     * @param string $method
+     * @param string $url
+     * @param array $headers
+     * @param array $parameters = []
      *
-     * @return mixed
+     * @return array
      */
-    public function returnDecodedData($url, $fields, $parameters, $type = 0)
+    public function returnDecodedData($method, $url, $headers, $parameters = [])
     {
-        return $this->decoder->decode($this->client->send($fields, $parameters, $url, $type));
+        return $this->decoder->decode($this->client->send($method, $url, $headers, $parameters));
+    }
+
+    /**
+     * @return array
+     */
+    protected function getHeaders()
+    {
+        return [
+            'App-Token'  => $this->appToken,
+            'Auth-Token' => $this->authToken,
+        ];
     }
 }
