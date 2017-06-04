@@ -1,58 +1,57 @@
-<?php namespace Hubstaff;
+<?php
+
+namespace Hubstaff;
 
 final class Weekly extends AbstractResource
 {
-    public function weeklyTeam($auth_token, $app_token, $options, $url)
+    /**
+     * @param array $parameters
+     *
+     * @return array
+     */
+    public function weeklyTeam(array $parameters = [])
     {
-        $fields['Auth-Token'] = $auth_token;
-        $fields['App-token'] = $app_token;
-        if (isset($options['date'])) {
-            $fields['date'] = $options['date'];
-            $parameters['date'] = '';
-        }
-        if (isset($options['organizations'])) {
-            $fields['organizations'] = $options['organizations'];
-            $parameters['organizations'] = '';
-        }
-        if (isset($options['projects'])) {
-            $fields['projects'] = $options['projects'];
-            $parameters['projects'] = '';
-        }
-        if (isset($options['users'])) {
-            $fields['users'] = $options['users'];
-            $parameters['users'] = '';
-        }
+        $parameters = $this->buildParameters($parameters);
 
-        $parameters['Auth-Token'] = 'header';
-        $parameters['App-token'] = 'header';
+        $url    = '/v1/weekly/team';
 
-        return $this->returnDecodedData($url, $fields, $parameters);
+        return $this->abstractResourceCall('GET', $url, $parameters);
     }
 
-    public function weeklyMy($auth_token, $app_token, $options, $url)
+    /**
+     * @param array $parameters
+     *
+     * @return array
+     */
+    public function weeklyMy(array $parameters = [])
     {
-        $fields['Auth-Token'] = $auth_token;
-        $fields['App-token'] = $app_token;
-        if (isset($options['date'])) {
-            $fields['date'] = $options['date'];
-            $parameters['date'] = '';
-        }
-        if (isset($options['organizations'])) {
-            $fields['organizations'] = $options['organizations'];
-            $parameters['organizations'] = '';
-        }
-        if (isset($options['projects'])) {
-            $fields['projects'] = $options['projects'];
-            $parameters['projects'] = '';
-        }
-        if (isset($options['users'])) {
-            $fields['users'] = $options['users'];
-            $parameters['users'] = '';
+        $parameters = $this->buildParameters($parameters);
+
+        $url    = '/v1/weekly/my';
+
+        return $this->abstractResourceCall('GET', $url, $parameters);
+    }
+
+    /**
+     * @param array $parameters
+     *
+     * @return array
+     */
+    private function buildParameters($parameters)
+    {
+        if (!count($parameters)) {
+            return [];
         }
 
-        $parameters['Auth-Token'] = 'header';
-        $parameters['App-token'] = 'header';
+        foreach ($parameters as $key => $value) {
+            if (is_array($value)) {
+                $parameters[ $key ] = implode(',', $value);
+                continue;
+            }
 
-        return $this->returnDecodedData($url, $fields, $parameters);
+            $parameters[ $key ] = $value;
+        }
+
+        return $parameters;
     }
 }
