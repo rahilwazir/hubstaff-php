@@ -54,6 +54,7 @@ class WeeklyTest extends \PHPUnit_Framework_TestCase
             'Auth-Token' => $this->authToken,
         ];
 
+
         $expectedParams = [];
 
         if (isset($parameters['date'])) {
@@ -158,3 +159,4 @@ class WeeklyTest extends \PHPUnit_Framework_TestCase
         ];
     }
 }
+
