@@ -2,7 +2,7 @@
 
 namespace Hubstaff;
 
-final class Client
+final class HubStaffClient
 {
     /**
      * @var null
