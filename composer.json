@@ -37,7 +37,7 @@
     "codacy": "vendor/bin/codacycoverage clover tests/_reports/logs/clover.xml",
     "phpunit": "vendor/bin/phpunit tests",
     "tests": [
-      "@phpunit",
+      "@phpunit"
     ]
   }
 }
