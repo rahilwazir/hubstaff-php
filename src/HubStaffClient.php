@@ -2,313 +2,305 @@
 
 namespace Hubstaff;
 
-final class HubStaffClient
+final class HubStaffClient extends AbstractResource
 {
     /**
-     * @var null
-     */
-    private $app_token = null;
-    /**
-     * @var null
-     */
-    private $auth_token = null;
-
-
-    /**
-     * Client constructor.
-     * @param $app_token
-     */
-    public function __construct($app_token)
-    {
-        $this->app_token = $app_token;
-    }
-
-    /**
-     * @return null
+     * @return string
      */
     public function getAuthToken()
     {
-        return $this->auth_token;
+        return $this->authToken;
     }
 
     /**
-     * @param $auth_token
+     * @param string $authToken
      */
-    public function setAuthToken($auth_token)
+    public function setAuthToken($authToken)
     {
-        $this->auth_token = $auth_token;
+        $this->authToken = $authToken;
     }
 
     /**
-     * @param $email
-     * @param $password
-     * @return mixed
+     * @param string $email
+     * @param string $password
      */
     public function auth($email, $password)
     {
-        $auth = new Auth;
-        $auth_token = $auth->auth($this->app_token, $email, $password, BASE_URL . AUTH);
-        if (isset($auth_token["error"])) {
-            return $auth_token["error"];
-        }
-        $this->setAuthToken($auth_token["auth_token"]);
+        $auth = new Auth($this->client, $this->decoder);
+        $authToken = $auth->auth($email, $password);
+        $this->setAuthToken($authToken['auth_token']);
     }
 
     /**
-     * @param int $organization_memberships
-     * @param int $project_memberships
+     * @param int $organizationMemberships
+     * @param int $projectMemberships
      * @param int $offset
-     * @return mixed
+     *
+     * @return array
      */
-    public function users($organization_memberships = 0, $project_memberships = 0, $offset = 0)
+    public function users($organizationMemberships = 0, $projectMemberships = 0, $offset = 0)
     {
-        $users = new Users;
-        return $users->getUsers($this->auth_token, $this->app_token, $organization_memberships, $project_memberships, $offset, BASE_URL . USERS);
+        $users = new Users($this->client, $this->decoder);
+        return $users->getUsers($organizationMemberships, $projectMemberships, $offset);
     }
 
     /**
-     * @param $id
-     * @return mixed
+     * @param int $id
+     * @return array
      */
-    public function find_user($id)
+    public function findUser($id)
     {
-        $users = new Users;
-        return $users->findUser($this->auth_token, $this->app_token, sprintf(BASE_URL . FIND_USER, $id));
+        $users = new Users($this->client, $this->decoder);
+        return $users->findUser($id);
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @param int $offset
-     * @return mixed
+     * @return array
      */
     public function findUserOrgs($id, $offset = 0)
     {
-        $users = new Users;
-        return $users->findUserOrgs($this->auth_token, $this->app_token, $offset, sprintf(BASE_URL . FIND_USER_ORG, $id));
+        $users = new Users($this->client, $this->decoder);
+        return $users->findUserOrgs($id, $offset);
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @param int $offset
-     * @return mixed
+     * @return array
      */
     public function findUserProjects($id, $offset = 0)
     {
-        $users = new Users;
-        return $users->findUserProjects($this->auth_token, $this->app_token, $offset, sprintf(BASE_URL . FIND_USER_PROJ, $id));
+        $users = new Users($this->client, $this->decoder);
+        return $users->findUserProjects($id, $offset);
     }
 
     /**
      * @param int $offset
-     * @return mixed
+     * @return array
      */
     public function organizations($offset = 0)
     {
-        $organizations = new Organizations;
-        return $organizations->getOrganizations($this->auth_token, $this->app_token, $offset, BASE_URL . ORGS);
+        $organizations = new Organizations($this->client, $this->decoder);
+        return $organizations->getOrganizations($offset);
     }
 
     /**
-     * @param $id
-     * @return mixed
+     * @param int $id
+     * @return array
      */
     public function findOrganization($id)
     {
-        $organizations = new Organizations;
-        return $organizations->findOrganization($this->auth_token, $this->app_token, sprintf(BASE_URL . FIND_ORG, $id));
+        $organizations = new Organizations($this->client, $this->decoder);
+        return $organizations->findOrganization($id);
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @param int $offset
-     * @return mixed
+     * @return array
      */
     public function findOrgProjects($id, $offset = 0)
     {
-        $organizations = new Organizations;
-        return $organizations->findOrgProjects($this->auth_token, $this->app_token, $offset, sprintf(BASE_URL . FIND_ORG_PROJ, $id));
+        $organizations = new Organizations($this->client, $this->decoder);
+        return $organizations->findOrgProjects($id, $offset);
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @param int $offset
-     * @return mixed
+     * @return array
      */
     public function findOrgMembers($id, $offset = 0)
     {
-        $organizations = new Organizations;
-        return $organizations->findOrgMembers($this->auth_token, $this->app_token, $offset, sprintf(BASE_URL . FIND_ORG_MEMBERS, $id));
+        $organizations = new Organizations($this->client, $this->decoder);
+        return $organizations->findOrgMembers($id, $offset);
     }
 
     /**
-     * @param string $active
+     * @param string $status
      * @param int $offset
-     * @return mixed
+     *
+     * @return array
      */
-    public function projects($active = '', $offset = 0)
+    public function projects($status = '', $offset = 0)
     {
-        $projects = new Projects;
-        return $projects->getProjects($this->auth_token, $this->app_token, $active, $offset, BASE_URL . PROJS);
+        $projects = new Projects($this->client, $this->decoder);
+        return $projects->getProjects($status, $offset);
     }
 
     /**
-     * @param $id
-     * @return mixed
+     * @param int $id
+     * @return array
      */
     public function findProject($id)
     {
-        $projects = new Projects;
-        return $projects->findProject($this->auth_token, $this->app_token, sprintf(BASE_URL . FIND_PROJ, $id));
+        $projects = new Projects($this->client, $this->decoder);
+        return $projects->findProject($id);
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @param int $offset
+     *
+     * @return array
      */
     public function findProjectMembers($id, $offset = 0)
     {
-        $projects = new Projects;
-        $projects->findProjectMembers($this->auth_token, $this->app_token, $offset, sprintf(BASE_URL . FIND_PROJ_MEMBERS, $id));
+        $projects = new Projects($this->client, $this->decoder);
+        return $projects->findProjectMembers($id, $offset);
     }
 
     /**
-     * @param $start_time
-     * @param $stop_time
+     * @param string $startTime
+     * @param string $stopTime
      * @param int $offset
      * @param array $options
-     * @return mixed
+     *
+     * @return array
      */
-    public function activities($start_time, $stop_time, $offset = 0, $options = [])
+    public function activities($startTime, $stopTime, $offset = 0, array $options = [])
     {
-        $activities = new Activities;
-        return $activities->getActivities($this->auth_token, $this->app_token, $start_time, $stop_time, $offset, $options, BASE_URL . ACTIVITIES);
+        $activities = new Activities($this->client, $this->decoder);
+        return $activities->getActivities($startTime, $stopTime, $options, $offset);
     }
 
     /**
-     * @param $start_time
-     * @param $stop_time
+     * @param string $startTime
+     * @param string $stopTime
      * @param int $offset
      * @param array $options
-     * @return mixed
+     *
+     * @return array
      */
-    public function screenshots($start_time, $stop_time, $offset = 0, $options = [])
+    public function screenshots($startTime, $stopTime, $offset = 0, array $options = [])
     {
-        $screenshots = new Screenshots;
-        return $screenshots->getScreenshots($this->auth_token, $this->app_token, $start_time, $stop_time, $offset, $options, BASE_URL . SCREENSHOTS);
+        $screenshots = new Screenshots($this->client, $this->decoder);
+        return $screenshots->getScreenshots($startTime, $stopTime, $options, $offset);
     }
 
     /**
-     * @param $start_time
-     * @param $stop_time
+     * @param string $startTime
+     * @param string $stopTime
      * @param int $offset
      * @param array $options
-     * @return mixed
+     *
+     * @return array
      */
-    public function notes($start_time, $stop_time, $offset = 0, $options = [])
+    public function notes($startTime, $stopTime, $offset = 0, array $options = [])
     {
-        $notes = new Notes;
-        return $notes->getNotes($this->auth_token, $this->app_token, $start_time, $stop_time, $offset, $options, BASE_URL . NOTES);
+        $notes = new Notes($this->client, $this->decoder);
+        return $notes->getNotes($startTime, $stopTime, $options, $offset);
     }
 
     /**
-     * @param $id
-     * @return mixed
+     * @param int $id
+     *
+     * @return array
      */
     public function findNote($id)
     {
-        $projects = new Notes;
-        return $projects->findNote($this->auth_token, $this->app_token, sprintf(BASE_URL . FIND_NOTE, $id));
+        $projects = new Notes($this->client, $this->decoder);
+        return $projects->findNote($id);
     }
 
     /**
      * @param array $options
-     * @return mixed
+     *
+     * @return array
      */
-    public function weeklyTeam($options = [])
+    public function weeklyTeam(array $options = [])
     {
-        $weekly = new Weekly;
-        return $weekly->weeklyTeam($this->auth_token, $this->app_token, $options, BASE_URL . WEEKLY_TEAM);
+        $weekly = new Weekly($this->client, $this->decoder);
+        return $weekly->weeklyTeam($options);
     }
 
     /**
      * @param array $options
-     * @return mixed
+     * @return array
      */
-    public function weeklyMy($options = [])
+    public function weeklyMy(array $options = [])
     {
-        $weekly = new Weekly;
-        return $weekly->weeklyMy($this->auth_token, $this->app_token, $options, BASE_URL . WEEKLY_MY);
+        $weekly = new Weekly($this->client, $this->decoder);
+        return $weekly->weeklyMy($options);
     }
 
     /**
-     * @param $start_date
-     * @param $end_date
+     * @param string $startDate
+     * @param string $endDate
      * @param array $options
-     * @return mixed
+     *
+     * @return array
      */
-    public function customDateTeam($start_date, $end_date, $options = [])
+    public function customDateTeam($startDate, $endDate, array $options = [])
     {
-        $custom = new Custom;
-        return $custom->customReport($this->auth_token, $this->app_token, $start_date, $end_date, $options, BASE_URL . CUSTOM_DATE_TEAM);
+        $custom = new Custom($this->client, $this->decoder);
+        return $custom->customReport($startDate, $endDate, '/v1/custom/by_date/team', $options);
     }
 
     /**
-     * @param $start_date
-     * @param $end_date
+     * @param string $startDate
+     * @param string $endDate
      * @param array $options
-     * @return mixed
+     *
+     * @return array
      */
-    public function customDateMy($start_date, $end_date, $options = [])
+    public function customDateMy($startDate, $endDate, array $options = [])
     {
-        $custom = new Custom;
-        return $custom->customReport($this->auth_token, $this->app_token, $start_date, $end_date, $options, BASE_URL . CUSTOM_DATE_MY);
+        $custom = new Custom($this->client, $this->decoder);
+        return $custom->customReport($startDate, $endDate, '/v1/custom/by_date/my', $options);
     }
 
     /**
-     * @param $start_date
-     * @param $end_date
+     * @param string $startDate
+     * @param string $endDate
      * @param array $options
-     * @return mixed
+     *
+     * @return array
      */
-    public function customMemberTeam($start_date, $end_date, $options = [])
+    public function customMemberTeam($startDate, $endDate, array $options = [])
     {
-        $custom = new Custom;
-        return $custom->customReport($this->auth_token, $this->app_token, $start_date, $end_date, $options, BASE_URL . CUSTOM_MEMBER_TEAM);
+        $custom = new Custom($this->client, $this->decoder);
+        return $custom->customReport($startDate, $endDate, '/v1/custom/by_member/team', $options);
     }
 
     /**
-     * @param $start_date
-     * @param $end_date
+     * @param string $startDate
+     * @param string $endDate
      * @param array $options
-     * @return mixed
+     *
+     * @return array
      */
-    public function customMemberMy($start_date, $end_date, $options = [])
+    public function customMemberMy($startDate, $endDate, array $options = [])
     {
-        $custom = new Custom;
-        return $custom->customReport($this->auth_token, $this->app_token, $start_date, $end_date, $options, BASE_URL . CUSTOM_MEMBER_MY);
+        $custom = new Custom($this->client, $this->decoder);
+        return $custom->customReport($startDate, $endDate, '/v1/custom/by_member/my', $options);
     }
 
     /**
-     * @param $start_date
-     * @param $end_date
+     * @param string $startDate
+     * @param string $endDate
      * @param array $options
-     * @return mixed
+     *
+     * @return array
      */
-    public function customProjectTeam($start_date, $end_date, $options = [])
+    public function customProjectTeam($startDate, $endDate, array $options = [])
     {
-        $custom = new Custom;
-        return $custom->customReport($this->auth_token, $this->app_token, $start_date, $end_date, $options, BASE_URL . CUSTOM_PROJECT_TEAM);
+        $custom = new Custom($this->client, $this->decoder);
+        return $custom->customReport($startDate, $endDate, '/v1/custom/by_project/team', $options);
     }
 
     /**
-     * @param $start_date
-     * @param $end_date
+     * @param string $startDate
+     * @param string $endDate
      * @param array $options
-     * @return mixed
+     *
+     * @return array
      */
-    public function customProjectMy($start_date, $end_date, $options = [])
+    public function customProjectMy($startDate, $endDate, array $options = [])
     {
-        $custom = new Custom;
-        return $custom->customReport($this->auth_token, $this->app_token, $start_date, $end_date, $options, BASE_URL . CUSTOM_PROJECT_MY);
+        $custom = new Custom($this->client, $this->decoder);
+        return $custom->customReport($startDate, $endDate, '/v1/custom/by_project/my', $options);
     }
 }
