@@ -1,10 +1,12 @@
 <?php
 
+namespace HubstaffTest;
+
 use Hubstaff\Auth;
 use Hubstaff\Decoder\DecodeDataInterface;
 use Hubstaff\Helper\ClientInterface;
 
-class AuthTest extends PHPUnit_Framework_TestCase
+class AuthTest extends \PHPUnit_Framework_TestCase
 {
 
     /**

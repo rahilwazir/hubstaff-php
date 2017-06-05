@@ -1,7 +1,8 @@
 <?php
 
-namespace Hubstaff;
+namespace HubstaffTest;
 
+use Hubstaff\Activities;
 use Hubstaff\Decoder\DecodeDataInterface;
 use Hubstaff\Helper\ClientInterface;
 use PHPUnit_Framework_TestCase;

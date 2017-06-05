@@ -1,9 +1,10 @@
 <?php
 
-namespace Hubstaff;
+namespace HubstaffTest;
 
 use Hubstaff\Decoder\DecodeDataInterface;
 use Hubstaff\Helper\ClientInterface;
+use Hubstaff\Users;
 
 /**
  * @covers \Hubstaff\Users
