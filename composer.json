@@ -9,7 +9,7 @@
     "hookops"
   ],
   "require": {
-    "php": "^5.6 || ^7.1",
+    "php": "^7.0",
     "ext-curl": "*",
     "beberlei/assert": "2.*",
     "symfony/yaml": "2.*|3.*",
