@@ -58,7 +58,7 @@ class ProjectsTest extends \PHPUnit_Framework_TestCase
             'offset' => $offset,
         ];
 
-        if(!empty($status)){
+        if (!empty($status)) {
             $parameters = array_merge($parameters, ['status' => $status]);
         }
 

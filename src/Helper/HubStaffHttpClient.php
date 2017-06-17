@@ -63,15 +63,14 @@ class HubStaffHttpClient implements ClientInterface
      */
     public function buildOptions($parameters)
     {
-        if($this->getMethod() == 'GET'){
+        if ($this->getMethod() == 'GET') {
             return ['query' => $parameters];
         }
 
-        if($this->getMethod() == 'POST') {
+        if ($this->getMethod() == 'POST') {
             return ['form_params' => $parameters];
         }
 
         return [];
     }
-
 }

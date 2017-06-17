@@ -181,4 +181,3 @@ class UsersTest extends \PHPUnit_Framework_TestCase
         self::assertEquals(array_keys($expected), array_keys($response));
     }
 }
-
