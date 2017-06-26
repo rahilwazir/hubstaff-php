@@ -55,4 +55,3 @@ final class Weekly extends AbstractResource
         return $parameters;
     }
 }
-
