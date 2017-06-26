@@ -7,5 +7,3 @@
     - composer install --dev
   script:
     - composer tests
-  after_success:
-    - composer codacy
