@@ -6,4 +6,4 @@
     - composer self-update
     - composer install --dev
   script:
-    - composer tests
+    - composer test
