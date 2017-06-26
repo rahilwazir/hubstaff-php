@@ -1,3 +1,5 @@
-.idea
-/vendor
+/example
 /composer.lock
+phpunit.xml
+tests/_reports
+.env
