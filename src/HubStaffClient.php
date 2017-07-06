@@ -7,6 +7,22 @@ final class HubStaffClient extends AbstractResource
     /**
      * @return string
      */
+    public function getAppToken()
+    {
+        return $this->appToken;
+    }
+
+    /**
+     * @param string $appToken
+     */
+    public function setAppToken(string $appToken)
+    {
+        $this->appToken = $appToken;
+    }
+
+    /**
+     * @return string
+     */
     public function getAuthToken()
     {
         return $this->authToken;
