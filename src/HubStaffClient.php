@@ -7,7 +7,7 @@ final class HubStaffClient extends AbstractResource
     /**
      * @return string
      */
-    public function getAppToken(): string
+    public function getAppToken()
     {
         return $this->appToken;
     }
@@ -15,7 +15,7 @@ final class HubStaffClient extends AbstractResource
     /**
      * @param string $appToken
      */
-    public function setAppToken(string $appToken)
+    public function setAppToken($appToken)
     {
         $this->appToken = $appToken;
     }
