@@ -15,36 +15,36 @@ API actions are available as methods on the client object. Currently, the Hubsta
 | Action               	                   | Method             					                             |
 |:-----------------------------------------|:----------------------------------------------------------|
 | **Users**                                |                   					                               |
-| List users          	                   | `#users(org_member, project_member, offset)`              |
-| Find a user          	                   | `#find_user(user_id)`                                     |
-| Find a users organizations    	         | `#find_user_orgs(user_id, offset)`                        |
-| Find a users projects                    | `#find_user_projects(user_id, offset)`                    |
+| List users          	                   | `#users($organizationMemberships = 0, $projectMemberships = 0, $offset = 0)`              |
+| Find a user          	                   | `#findUser($id)`                                     |
+| Find a users organizations    	         | `#findUserOrgs($id, $offset = 0)`                        |
+| Find a users projects                    | `#findUserProjects($id, $offset = 0)`                    |
 | **Organizations**                        |                   					                               |
-| List organizations                       | `#organizations(offset)`                                  |
-| Find a organization                      | `#find_organization(org_id)`                              |
-| Find a organization projects 	           | `#find_org_projects(org_id, offset)`                      |
-| Find a organization members              | `#find_org_members(org_id, offset)`                       |
+| List organizations                       | `#organizations($offset = 0)`                                  |
+| Find a organization                      | `#findOrganization($id)`                              |
+| Find a organization projects 	           | `#findOrgProjects($id, $offset = 0)`                      |
+| Find a organization members              | `#findOrgMembers($id, $offset = 0)`                       |
 | **Projects**                             |                   					                               |
-| List projects                            | `#projects(active, offset)`                               |
-| Find a project                           | `#find_project(project_id)`                               |
-| Find a project members                   | `#find_project_members(project_id, offset)`               |
+| List projects                            | `#projects($status = '', $offset = 0)`                               |
+| Find a project                           | `#findProject($id)`                               |
+| Find a project members                   | `#findProjectMembers($id, $offset = 0)`               |
 | **Activities**                           |                   					                               |
-| List activities                          | `#activities(start_time, stop_time, offset, options={})`  |
+| List activities                          | `#activities($startTime, $stopTime, $offset = 0, array $options = [])`  |
 | **Screenshots**                          |                    					                             | 
-| List Screenshots                         | `#screenshots(start_time, stop_time, offset, options={})` |
+| List Screenshots                         | `#screenshots($startTime, $stopTime, $offset = 0, array $options = [])` |
 | **Notes**                                |                   					                               |
-| List notes                               | `#notes(start_time, stop_time, offset, options={})`       |
-| Find a note                              | `#find_note(note_id)`                                     |
+| List notes                               | `#notes($startTime, $stopTime, $offset = 0, array $options = [])`       |
+| Find a note                              | `#findNote($id)`                                     |
 | **Weekly Reports**                       |                   					                               |
-| List weekly team report                  | `#weekly_team(options={})`                                |
-| List weekly individual report            | `#weekly_my(options={})`                                  |
+| List weekly team report                  | `#weeklyTeam(array $options = [])`                                |
+| List weekly individual report            | `#weeklyMy(array $options = [])`                                  |
 | **Custom Reports**                       |                   					                               |
-| List custom team report by date          | `#custom_date_team(start_date, end_date, options={})`     |
-| List custom individual report by date    | `#custom_date_my(start_date, end_date, options={})`       |
-| List custom team report by member        | `#custom_member_team(start_date, end_date, options={})`   |
-| List custom individual report by member  | `#custom_member_my(start_date, end_date, options={})`     |
-| List custom team report by project       | `#custom_project_team(start_date, end_date, options={})`  |
-| List custom individual report by project | `#custom_project_my(start_date, end_date, options={})`    |
+| List custom team report by date          | `#customDateTeam($startDate, $endDate, array $options = [])`     |
+| List custom individual report by date    | `#customDateMy($startDate, $endDate, array $options = [])`       |
+| List custom team report by member        | `#customMemberTeam($startDate, $endDate, array $options = [])`   |
+| List custom individual report by member  | `#customMemberMy($startDate, $endDate, array $options = [])`     |
+| List custom team report by project       | `#customProjectTeam($startDate, $endDate, array $options = [])`  |
+| List custom individual report by project | `#customProjectMy($startDate, $endDate, array $options = [])`    |
 
 
 
@@ -57,25 +57,23 @@ First, grab your personal ``APP_TOKEN`` found in [your account settings](https:/
 After that, you'll authenticate the client and start exporting data from your account.
 
 ```php
-include("hubstaff.php");
+require __DIR__ . '/vendor/autoload.php'; 
 
-$app_token = "< your hubstaff app token >";
+$appToken = "< your hubstaff app token >";
 $email = "< your hubstaff account email address >";
 $password = "< your hubstaff account password >";
 
-$hubstaff = new hubstaff\Client($app_token);
+$hubstaffClient = new Hubstaff\HubStaffClient();
+$hubstaffClient->setAppToken($appToken); 
+$hubstaffClient->auth(email,password);
 
-$hubstaff->auth(email,password);
+$authToken = $hubstaff->getAuthToken();
 
-$auth_token = $hubstaff->get_auth_token();
-
-//=>
-"< hubstaff auth_token >"
 ```
 ### You can list all users for a specific account, and get the details about the organization, and the projects they've worked on.
 
 ```php
-$hubstaff->users(1,1,0);
+$hubstaffClient->users(1,1,0);
 
 //=>
 {
@@ -115,7 +113,7 @@ $hubstaff->users(1,1,0);
 ### You can find specific users by their``user_id``.
 
 ```php
-$hubstaff->find_user(61188);
+$hubstaffClient->findUser(61188);
 
 //=>
 {
@@ -131,7 +129,7 @@ $hubstaff->find_user(61188);
 ### You can list all active projects.
 
 ```php
-$hubstaff->projects();
+$hubstaffClient->projects();
 
 //=>
 {
@@ -158,7 +156,7 @@ $hubstaff->projects();
 ### Retrieve screenshots for a specific project, within a specific timeframe.
 
 ```php
-$hubstaff->screenshots("2016-05-22", "2016-05-24", array("projects"=>"112761"));
+$hubstaffClient->screenshots("2016-05-22", "2016-05-24", ["projects"=>"112761"]);
 
 //=>
 {
@@ -214,13 +212,14 @@ In order to run tests you need to get development dependencies using composer:
 composer install --prefer-source
 ``` 
 
-And run for each test file as shown here:
+And run all tests
+
 ```php
-phpunit ./tests/activities.php
+./vendor/bin/phpunit tests
+```
+OR execute a specific tests using filter option of phpunit. 
 
-//AND
+```php 
+./vendor/bin/phpunit tests --filter testName
 
-phpunit ./tests/screenshots.php
-
-//etc
 ```
