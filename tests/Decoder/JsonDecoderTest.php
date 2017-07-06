@@ -1,5 +1,8 @@
-<?php namespace Hubstaff\Decoder;
+<?php
 
+namespace HubstaffTest\Decoder;
+
+use Hubstaff\Decoder\JsonDecoder;
 use PHPUnit_Framework_TestCase;
 use stdClass;
 

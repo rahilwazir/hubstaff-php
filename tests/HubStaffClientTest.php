@@ -44,7 +44,7 @@ class HubStaffClientTest extends \PHPUnit_Framework_TestCase
     {
         $this->httpClient = $this->createMock(ClientInterface::class);
         $this->decoder = $this->createMock(DecodeDataInterface::class);
-        $this->hubStaffClient = new HubStaffClient($this->httpClient, $this->decoder, $this->appToken);
+        $this->hubStaffClient = new HubStaffClient($this->httpClient, $this->decoder);
     }
     /**
      * @test
