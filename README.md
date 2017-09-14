@@ -1,5 +1,7 @@
 # Hubstaff PHP Client
 
+[![Build Status](https://travis-ci.org/dexfs/hubstaff-php.svg?branch=master)](https://travis-ci.org/dexfs/hubstaff-php)
+
 A PHP toolkit for Hubstaff API.
 
 ## Installation
