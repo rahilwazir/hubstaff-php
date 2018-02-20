@@ -1,5 +1,8 @@
 # Hubstaff PHP Client
 
+[![Build Status](https://travis-ci.org/dexfs/hubstaff-php.svg?branch=master)](https://travis-ci.org/dexfs/hubstaff-php)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/6f17a6b20b8a4e0d875d369488715ec5)](https://www.codacy.com/app/dexfs/hubstaff-php?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dexfs/hubstaff-php&amp;utm_campaign=Badge_Coverage)
+
 A PHP toolkit for Hubstaff API.
 
 ## Installation
