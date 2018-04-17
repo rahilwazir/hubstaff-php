@@ -45,7 +45,7 @@ final class HubStaffClient extends AbstractResource
         $auth = new Auth($this->client, $this->decoder);
         $auth->appToken = $this->getAppToken();
         $authToken = $auth->auth($email, $password);
-        $this->setAuthToken($authToken['auth_token']);
+        $this->setAuthToken($authToken['user']['auth_token'] ?? '');
     }
 
     /**
