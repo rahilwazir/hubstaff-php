@@ -13,14 +13,14 @@ class HubStaffHttpClient implements ClientInterface
     /**
      * @param string $method
      * @param string $url
-     * @param array $headers
      * @param array $parameters
+     * @param array $headers
      *
      * @return array|string
      * @throws \RuntimeException
      * @throws \GuzzleHttp\Exception\RequestException;
      */
-    public function send($method, $url, $headers, $parameters = [])
+    public function send($method, $url, $parameters = [], $headers)
     {
         $client = new Client(
             [

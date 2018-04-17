@@ -2,5 +2,5 @@
 
 interface ClientInterface
 {
-    public function send($method, $url, $headers, $parameters = []);
+    public function send($method, $url, $parameters = [], $headers);
 }

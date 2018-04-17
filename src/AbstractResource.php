@@ -48,7 +48,7 @@ abstract class AbstractResource
      */
     public function abstractResourceCall($method = 'GET', $url, $parameters = [])
     {
-        return $this->returnDecodedData($method, $url, $this->getHeaders(), $parameters);
+        return $this->returnDecodedData($method, $url, $parameters, $this->getHeaders());
     }
 
     /**
@@ -56,14 +56,14 @@ abstract class AbstractResource
      *
      * @param string $method
      * @param string $url
-     * @param array $headers
      * @param array $parameters = []
+     * @param array $headers
      *
      * @return array
      */
-    public function returnDecodedData($method, $url, $headers, $parameters = [])
+    public function returnDecodedData($method, $url, $parameters = [], $headers)
     {
-        return $this->decoder->decode($this->client->send($method, $url, $headers, $parameters));
+        return $this->decoder->decode($this->client->send($method, $url, $parameters, $headers));
     }
 
     /**
