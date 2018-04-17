@@ -7,7 +7,7 @@ use GuzzleHttp\Exception\RequestException;
 
 class HubStaffHttpClient implements ClientInterface
 {
-    private $host;
+    private $host = 'https://api.hubstaff.com';
     private $method;
 
     /**
