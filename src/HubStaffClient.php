@@ -58,6 +58,8 @@ final class HubStaffClient extends AbstractResource
     public function users($organizationMemberships = 0, $projectMemberships = 0, $offset = 0)
     {
         $users = new Users($this->client, $this->decoder);
+        $users->appToken = $this->getAppToken();
+        $users->authToken = $this->getAuthToken();
         return $users->getUsers($organizationMemberships, $projectMemberships, $offset);
     }
 
@@ -68,6 +70,8 @@ final class HubStaffClient extends AbstractResource
     public function findUser($id)
     {
         $users = new Users($this->client, $this->decoder);
+        $users->appToken = $this->getAppToken();
+        $users->authToken = $this->getAuthToken();
         return $users->findUser($id);
     }
 
@@ -79,6 +83,8 @@ final class HubStaffClient extends AbstractResource
     public function findUserOrgs($id, $offset = 0)
     {
         $users = new Users($this->client, $this->decoder);
+        $users->appToken = $this->getAppToken();
+        $users->authToken = $this->getAuthToken();
         return $users->findUserOrgs($id, $offset);
     }
 
@@ -90,6 +96,8 @@ final class HubStaffClient extends AbstractResource
     public function findUserProjects($id, $offset = 0)
     {
         $users = new Users($this->client, $this->decoder);
+        $users->appToken = $this->getAppToken();
+        $users->authToken = $this->getAuthToken();
         return $users->findUserProjects($id, $offset);
     }
 
@@ -100,6 +108,8 @@ final class HubStaffClient extends AbstractResource
     public function organizations($offset = 0)
     {
         $organizations = new Organizations($this->client, $this->decoder);
+        $organizations->appToken = $this->getAppToken();
+        $organizations->authToken = $this->getAuthToken();
         return $organizations->getOrganizations($offset);
     }
 
@@ -110,6 +120,8 @@ final class HubStaffClient extends AbstractResource
     public function findOrganization($id)
     {
         $organizations = new Organizations($this->client, $this->decoder);
+        $organizations->appToken = $this->getAppToken();
+        $organizations->authToken = $this->getAuthToken();
         return $organizations->findOrganization($id);
     }
 
@@ -121,6 +133,8 @@ final class HubStaffClient extends AbstractResource
     public function findOrgProjects($id, $offset = 0)
     {
         $organizations = new Organizations($this->client, $this->decoder);
+        $organizations->appToken = $this->getAppToken();
+        $organizations->authToken = $this->getAuthToken();
         return $organizations->findOrgProjects($id, $offset);
     }
 
@@ -132,6 +146,8 @@ final class HubStaffClient extends AbstractResource
     public function findOrgMembers($id, $offset = 0)
     {
         $organizations = new Organizations($this->client, $this->decoder);
+        $organizations->appToken = $this->getAppToken();
+        $organizations->authToken = $this->getAuthToken();
         return $organizations->findOrgMembers($id, $offset);
     }
 
@@ -144,6 +160,8 @@ final class HubStaffClient extends AbstractResource
     public function projects($status = '', $offset = 0)
     {
         $projects = new Projects($this->client, $this->decoder);
+        $projects->appToken = $this->getAppToken();
+        $projects->authToken = $this->getAuthToken();
         return $projects->getProjects($status, $offset);
     }
 
@@ -154,6 +172,8 @@ final class HubStaffClient extends AbstractResource
     public function findProject($id)
     {
         $projects = new Projects($this->client, $this->decoder);
+        $projects->appToken = $this->getAppToken();
+        $projects->authToken = $this->getAuthToken();
         return $projects->findProject($id);
     }
 
@@ -166,6 +186,8 @@ final class HubStaffClient extends AbstractResource
     public function findProjectMembers($id, $offset = 0)
     {
         $projects = new Projects($this->client, $this->decoder);
+        $projects->appToken = $this->getAppToken();
+        $projects->authToken = $this->getAuthToken();
         return $projects->findProjectMembers($id, $offset);
     }
 
@@ -180,6 +202,8 @@ final class HubStaffClient extends AbstractResource
     public function activities($startTime, $stopTime, $offset = 0, array $options = [])
     {
         $activities = new Activities($this->client, $this->decoder);
+        $activities->appToken = $this->getAppToken();
+        $activities->authToken = $this->getAuthToken();
         return $activities->getActivities($startTime, $stopTime, $options, $offset);
     }
 
@@ -194,6 +218,8 @@ final class HubStaffClient extends AbstractResource
     public function screenshots($startTime, $stopTime, $offset = 0, array $options = [])
     {
         $screenshots = new Screenshots($this->client, $this->decoder);
+        $screenshots->appToken = $this->getAppToken();
+        $screenshots->authToken = $this->getAuthToken();
         return $screenshots->getScreenshots($startTime, $stopTime, $options, $offset);
     }
 
@@ -208,6 +234,8 @@ final class HubStaffClient extends AbstractResource
     public function notes($startTime, $stopTime, $offset = 0, array $options = [])
     {
         $notes = new Notes($this->client, $this->decoder);
+        $notes->appToken = $this->getAppToken();
+        $notes->authToken = $this->getAuthToken();
         return $notes->getNotes($startTime, $stopTime, $options, $offset);
     }
 
@@ -219,6 +247,8 @@ final class HubStaffClient extends AbstractResource
     public function findNote($id)
     {
         $projects = new Notes($this->client, $this->decoder);
+        $projects->appToken = $this->getAppToken();
+        $projects->authToken = $this->getAuthToken();
         return $projects->findNote($id);
     }
 
@@ -230,6 +260,8 @@ final class HubStaffClient extends AbstractResource
     public function weeklyTeam(array $options = [])
     {
         $weekly = new Weekly($this->client, $this->decoder);
+        $weekly->appToken = $this->getAppToken();
+        $weekly->authToken = $this->getAuthToken();
         return $weekly->weeklyTeam($options);
     }
 
@@ -240,6 +272,8 @@ final class HubStaffClient extends AbstractResource
     public function weeklyMy(array $options = [])
     {
         $weekly = new Weekly($this->client, $this->decoder);
+        $weekly->appToken = $this->getAppToken();
+        $weekly->authToken = $this->getAuthToken();
         return $weekly->weeklyMy($options);
     }
 
@@ -253,6 +287,8 @@ final class HubStaffClient extends AbstractResource
     public function customDateTeam($startDate, $endDate, array $options = [])
     {
         $custom = new Custom($this->client, $this->decoder);
+        $custom->appToken = $this->getAppToken();
+        $custom->authToken = $this->getAuthToken();
         return $custom->customReport($startDate, $endDate, '/v1/custom/by_date/team', $options);
     }
 
@@ -266,6 +302,8 @@ final class HubStaffClient extends AbstractResource
     public function customDateMy($startDate, $endDate, array $options = [])
     {
         $custom = new Custom($this->client, $this->decoder);
+        $custom->appToken = $this->getAppToken();
+        $custom->authToken = $this->getAuthToken();
         return $custom->customReport($startDate, $endDate, '/v1/custom/by_date/my', $options);
     }
 
@@ -279,6 +317,8 @@ final class HubStaffClient extends AbstractResource
     public function customMemberTeam($startDate, $endDate, array $options = [])
     {
         $custom = new Custom($this->client, $this->decoder);
+        $custom->appToken = $this->getAppToken();
+        $custom->authToken = $this->getAuthToken();
         return $custom->customReport($startDate, $endDate, '/v1/custom/by_member/team', $options);
     }
 
@@ -292,6 +332,8 @@ final class HubStaffClient extends AbstractResource
     public function customMemberMy($startDate, $endDate, array $options = [])
     {
         $custom = new Custom($this->client, $this->decoder);
+        $custom->appToken = $this->getAppToken();
+        $custom->authToken = $this->getAuthToken();
         return $custom->customReport($startDate, $endDate, '/v1/custom/by_member/my', $options);
     }
 
@@ -305,6 +347,8 @@ final class HubStaffClient extends AbstractResource
     public function customProjectTeam($startDate, $endDate, array $options = [])
     {
         $custom = new Custom($this->client, $this->decoder);
+        $custom->appToken = $this->getAppToken();
+        $custom->authToken = $this->getAuthToken();
         return $custom->customReport($startDate, $endDate, '/v1/custom/by_project/team', $options);
     }
 
@@ -318,6 +362,8 @@ final class HubStaffClient extends AbstractResource
     public function customProjectMy($startDate, $endDate, array $options = [])
     {
         $custom = new Custom($this->client, $this->decoder);
+        $custom->appToken = $this->getAppToken();
+        $custom->authToken = $this->getAuthToken();
         return $custom->customReport($startDate, $endDate, '/v1/custom/by_project/my', $options);
     }
 }
